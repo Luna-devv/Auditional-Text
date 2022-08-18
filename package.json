@@ -8,6 +8,7 @@
     "discord.js": "^14.1.2",
     "dlist.js": "^0.4.1",
     "ffmpeg-static": "^5.0.2",
+    "libsodium-wrappers": "^0.7.10",
     "mp3-duration": "^1.1.0"
   },
   "devDependencies": {

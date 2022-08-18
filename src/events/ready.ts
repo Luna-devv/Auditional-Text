@@ -15,6 +15,8 @@ export default {
             bot: client.user?.id || '',
         });
 
+        if (process.platform == 'win32') return;
+
         dlist.postGuilds(client.guilds.cache.size);
         postStats(client);
         setInterval(() => {
@@ -27,8 +29,6 @@ export default {
 
 
 function postStats(client: Client) {
-    console.log("lol")
-    if (Config.dev) return;
     Config.listings.forEach(async (listing) => {
         if (!listing.active) return;
 

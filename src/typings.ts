@@ -8,7 +8,6 @@ export type Command = {
 }
 
 export type ConfigType = {
-    dev: true | false
     token: string
     dlist: string
     api: string

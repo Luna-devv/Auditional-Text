@@ -11,6 +11,7 @@ export type ConfigType = {
     token: string
     dlist: string
     api: string
+    ad: string;
     data: {
         commands: Collection<string, Command>
         events: Collection<string, any>

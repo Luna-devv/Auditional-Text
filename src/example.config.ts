@@ -5,6 +5,7 @@ export const Config: ConfigType = {
     token: '',
     dlist: '',
     api: '',
+    ad: '',
     data: {
         commands: new Collection(),
         events: new Collection(),

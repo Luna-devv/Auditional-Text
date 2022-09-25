@@ -1,30 +1,35 @@
 import { Client, CommandInteraction } from "discord.js";
 import fs from 'fs';
 import { Config } from "../../config";
+import { getData } from "../../getData";
 
 export default {
     name: 'mp3',
     run: async (client: Client, interaction: CommandInteraction) => {
-        await interaction.deferReply({ ephemeral: !interaction.guild?.members.me?.permissionsIn(interaction.channel?.id || '').has(['ViewChannel', 'SendMessages', 'AttachFiles']) });
+
+        //@ts-ignore
+        const visibility: string = interaction.options.getString('visibility');
+
+        await interaction.deferReply({ ephemeral: !interaction.guild?.members.me?.permissionsIn(interaction.channelId).has(['ViewChannel', 'SendMessages', 'AttachFiles']) || visibility === 'hidden' });
 
         //@ts-ignore
         const textInput: string = interaction.options.getString('text');
         //@ts-ignore
         const speaker: string = interaction.options.getString('speaker');
 
-        const res = await fetch(Config.api + (speaker || 'en_us_002') + '&req_text=' + textInput.replace(/ +/g, '%20').slice(0, 300), { method: 'POST' });
-        const data = await res.json();
-
-        const name: string = `${interaction.user.id}.mp3`;
-        await fs.writeFileSync(name, Buffer.from(data.data.v_str.replace('data:audio/mp3; codecs=opus;base64,', ''), 'base64'))
+        const res = await getData(textInput, speaker || 'en_us_002');
+        if (!res) return interaction.editReply({
+            content: `> <:dnd_status:949003440091201587> Something went wrong playing this file. A shorter text might fix it!\n${Config.ad}`
+        });
 
         await interaction.editReply({
-            content: '<:online_status:949003338186383491> Here\'s your audio file',
-            files: [`./${name}`]
+            content: `> <:online_status:949003338186383491> Here\'s your audio file!\n${Config.ad}`,
+            files: [res]
         });
 
         setTimeout(() => {
-            fs.unlink(`./${name}`, () => null);
+            fs.unlink(res, () => null);
         }, 4 * 1000);
+
     }
 };

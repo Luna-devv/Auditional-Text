@@ -4,10 +4,11 @@ import { Config } from "./config";
 export const client = new Client({
     intents: 641,
     presence: {
+        status: 'online',
         activities: [
             {
                 type: 2,
-                name: 'tts @ waya.one'
+                name: 'waya.one fixed it'
             }
         ]
     }
@@ -20,6 +21,6 @@ const names = ['interactions', 'events'];
 names.forEach(name => {
     require(`./handlers/${name}`).default(client);
 });
-(client as any).path = new String(__dirname);
 
+export const root = __dirname;
 client.login(Config.token)

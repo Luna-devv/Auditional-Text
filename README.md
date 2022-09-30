@@ -1,6 +1,6 @@
-![](https://img.shields.io/discord/828676951023550495?color=5865F2&logo=discord&logoColor=white)
-![](https://img.shields.io/github/license/Luna-devv/Auditional-Text?maxAge=3600)
-![](https://img.shields.io/github/languages/code-size/Luna-devv/Auditional-Text?maxAge=3600)
+[![](https://img.shields.io/discord/828676951023550495?color=5865F2&logo=discord&logoColor=white)](https://discord.com/invites/w4QY2mhe3x)
+[![](https://img.shields.io/github/license/Luna-devv/Auditional-Text?maxAge=3600)](https://github.com/Luna-devv/Auditional-Text)
+[![](https://img.shields.io/github/languages/code-size/Luna-devv/Auditional-Text?maxAge=3600)](https://github.com/Luna-devv/Auditional-Text)
 ### Description
 Convert texts from up to 300 characters into an MP3 audio file using `/mp3` or just use `/voice` and directly speak your message in the current voice chat you're in and have fun with your friends. Note that you can't play anything while your friends are trying to annoy you 😘.
 Note that not all slurs or 'new' words will work (correctly), some might be skipped completely.

@@ -28,6 +28,13 @@ export default {
                         {
                             type: 2,
                             style: 5,
+                            label: 'TikTok',
+                            url: 'https://lunish.nl/tiktok-01',
+                            emoji: '<:Icons_tiktok:941672576449654804>'
+                        },
+                        {
+                            type: 2,
+                            style: 5,
                             label: 'Invite Auditional Text',
                             url: 'https://discord.com/api/oauth2/authorize?client_id=985213199248924722&permissions=3197952&scope=bot%20applications.commands',
                             emoji: '<:icons_audioenable:875395222291513354>'
@@ -35,10 +42,10 @@ export default {
                         {
                             type: 2,
                             style: 5,
-                            label: 'TikTok',
-                            url: 'https://lunish.nl/tiktok-01',
-                            emoji: '<:Icons_tiktok:941672576449654804>'
-                        }
+                            label: 'Vote for Auditional Text',
+                            url: 'https://top.gg/bot/985213199248924722/vote',
+                            emoji: '<:icons_topgg:988409375905443900>'
+                        },
                     ]
                 }
             ]

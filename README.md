@@ -1,4 +1,4 @@
-[![](https://img.shields.io/discord/828676951023550495?color=5865F2&logo=discord&logoColor=white)](https://discord.com/invites/w4QY2mhe3x)
+[![](https://img.shields.io/discord/828676951023550495?color=5865F2&logo=discord&logoColor=white)](https://discord.com/invite/w4QY2mhe3x)
 [![](https://img.shields.io/github/license/Luna-devv/Auditional-Text?maxAge=3600)](https://github.com/Luna-devv/Auditional-Text)
 [![](https://img.shields.io/github/languages/code-size/Luna-devv/Auditional-Text?maxAge=3600)](https://github.com/Luna-devv/Auditional-Text)
 ### Description

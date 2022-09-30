@@ -38,6 +38,13 @@ export default {
                             label: 'TikTok',
                             url: 'https://lunish.nl/tiktok-01',
                             emoji: '<:Icons_tiktok:941672576449654804>'
+                        },
+                        {
+                            type: 2,
+                            style: 5,
+                            label: 'Vote for Auditional Text',
+                            url: 'https://top.gg/bot/985213199248924722/vote',
+                            emoji: '<:icons_audioenable:875395222291513354>'
                         }
                     ]
                 }

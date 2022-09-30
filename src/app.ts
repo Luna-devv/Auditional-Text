@@ -1,5 +1,6 @@
 import { Client } from "discord.js";
 import { Config } from "./config";
+import mongoose from 'mongoose';
 
 export const client = new Client({
     intents: 641,
@@ -13,6 +14,9 @@ export const client = new Client({
         ]
     }
 });
+
+mongoose.connect(Config.mongo)
+    .catch(e => console.log(e));
 
 if (!(client as any)._playing) (client as any)._playing = {};
 if (!(client as any)._disconnect) (client as any)._disconnect = {};

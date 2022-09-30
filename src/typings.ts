@@ -9,6 +9,7 @@ export type Command = {
 
 export type ConfigType = {
     token: string
+    mongo: string
     dlist: string
     api: string
     ad: string;

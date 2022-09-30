@@ -3,6 +3,7 @@ import { ConfigType } from "./typings";
 
 export const Config: ConfigType = {
     token: '',
+    mongo: '',
     dlist: '',
     api: '',
     ad: '',

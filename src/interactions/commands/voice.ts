@@ -1,9 +1,11 @@
 import { joinVoiceChannel, createAudioPlayer, createAudioResource } from '@discordjs/voice';
 import { Client, CommandInteraction, GuildMember } from "discord.js";
 import mp3Duration from 'mp3-duration';
-import { Config } from '../../config';
 import fs from 'node:fs';
+
+import { Config } from '../../config';
 import { getData } from '../../getData';
+import Users from "../../structures/user";
 
 
 export default {
@@ -69,7 +71,9 @@ export default {
         const textInput: string = interaction.options.getString('text');
         //@ts-ignore
         const speaker: string = interaction.options.getString('speaker');
-        const res = await getData(textInput, speaker || 'en_us_002');
+        const user = await Users.findOne({ user: interaction.user.id });
+
+        const res = await getData(textInput, speaker || user?.voice || 'en_us_002');
 
         if (!res) return interaction.editReply({
             content: `> <:dnd_status:949003440091201587> Something went wrong playing this file. A shorter text might fix it!\n${Config.ad}`

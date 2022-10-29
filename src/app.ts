@@ -20,6 +20,7 @@ mongoose.connect(Config.mongo)
 
 if (!(client as any)._playing) (client as any)._playing = {};
 if (!(client as any)._disconnect) (client as any)._disconnect = {};
+if (!(client as any)._connection) (client as any)._connection = {};
 
 const names = ['interactions', 'events'];
 names.forEach(name => {

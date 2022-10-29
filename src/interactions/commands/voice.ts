@@ -52,7 +52,7 @@ export default {
 
         const member: GuildMember | undefined | null = interaction.guild?.members.cache.get(interaction.user.id) || await interaction.guild?.members.fetch(interaction.user.id).catch(() => null);
         if (!member?.voice.channelId) return interaction.reply({
-            content: `> <:dnd_status:949003440091201587> You\'re not connexted to any Voice Channels.\n${Config.ad}`,
+            content: `> <:dnd_status:949003440091201587> You\'re not connected to any Voice Channels.\n${Config.ad}`,
             ephemeral: true
         });
 
@@ -82,7 +82,7 @@ export default {
         mp3Duration(res, async (err: any, duration: number) => {
 
             if (!interaction.guild?.voiceAdapterCreator) return;
-            const connection = joinVoiceChannel({
+            (client as any)._connection[interaction.guildId || ''] = joinVoiceChannel({
                 channelId: member?.voice.channelId || '',
                 guildId: interaction.guildId || '',
                 adapterCreator: interaction.guild?.voiceAdapterCreator
@@ -94,7 +94,7 @@ export default {
             const player = await createAudioPlayer();
             const resource = await createAudioResource(res)
 
-            await connection.subscribe(player);
+            await (client as any)._connection[interaction.guildId || ''].subscribe(player);
             await player.play(resource);
 
             await interaction.editReply({ content: `> <:online_status:949003338186383491> Now playing in <#${member?.voice.channelId}>, it's **${duration} seconds** long\n${Config.ad}` });
@@ -105,7 +105,8 @@ export default {
 
             setTimeout(() => {
                 if (((client as any)._disconnect[interaction.guild?.id || ''] + ((duration * 1000) + 10000)) < new Date().getTime()) {
-                    return connection.disconnect();
+                    (client as any)._connection[interaction.guildId || ''].disconnect();
+                    delete (client as any)._connection[interaction.guildId || ''];
                 }
             }, (duration * 1000) + 10000);
 

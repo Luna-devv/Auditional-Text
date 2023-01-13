@@ -1,5 +1,5 @@
 import { readdirSync } from 'node:fs';
-import { Config } from '../config';
+import { Config, Emote } from '../config';
 
 export default function () {
     const commands = readdirSync('./dist/interactions/commands/').filter(file => file.endsWith('.js'));

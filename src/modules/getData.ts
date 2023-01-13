@@ -1,4 +1,4 @@
-import { Config } from './config';
+import { Config, Emote } from '../config';
 import fs from 'node:fs';
 
 export async function getData(text: string, voice: string): Promise<string | null> {

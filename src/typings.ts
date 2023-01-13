@@ -21,6 +21,7 @@ export type ConfigType = {
     apis: {
         tts: string;
         votes?: string
+        votes_authorization?: string
     }
 
     // verify user's as real users by voting lmao

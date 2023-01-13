@@ -12,16 +12,16 @@ export default {
         if (!client.isReady()) return;
 
         stats.num++;
-        console.log(`${new Date().toISOString()} :: ${stats.num} :: ${ms(client.uptime ?? 0)}`);
+        console.log(`\x1b[2m\x1b[43m\x1b[37m\x1b[1m\x1b[37m${new Date().toISOString().replace('T', ' ').replace('Z', '')}:\x1b[0m \x1b[33m\x1b[1m${stats.num} :: ${ms(client.uptime ?? 0)}\x1b[0m`);
 
 
         if (interaction.isChatInputCommand()) {
-            const command: Command | undefined = await Config.data.interactions.commands.get(interaction.commandName);
+            const command: Command = await Config.data.interactions.commands.get(interaction.commandName);
             if (!command) return;
 
             if (!command.dm && !interaction.guild?.id) {
                 interaction.reply({
-                    content: '> <:dnd_status:949003440091201587> This command can only be used inside of a server.',
+                    content: '${Emote.error} This command can only be used inside of a server.',
                     components: [
                         {
                             type: 1,

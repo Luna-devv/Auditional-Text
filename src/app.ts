@@ -17,8 +17,11 @@ export const client = new Client({
     }
 });
 
+process.env.NODE_NO_WARNINGS = '1';
+
 mongoose.connect(Config.mongo)
     .catch((e) => console.log(e));
+mongoose.set('strictQuery', true);
 
 export const stats = { num: 0 };
 

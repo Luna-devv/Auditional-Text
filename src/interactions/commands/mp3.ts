@@ -1,9 +1,10 @@
 import fs from 'node:fs';
 
-import { Config } from '../../config';
-import { getData } from '../../getData';
+import { Config, Emote } from '../../config';
+import { getData } from '../../modules/getData';
 import { Command } from '../../typings';
-import Users from '../../structures/user';
+import { User, users } from '../../structures/user';
+import { validate } from '../../modules/voteValidation';
 
 export default {
     name: 'mp3',
@@ -19,15 +20,17 @@ export default {
         const textInput: string = interaction.options.getString('text');
         // @ts-expect-error I dont understand those djs typings
         const speaker: string = interaction.options.getString('speaker');
-        const user = await Users.findOne({ user: interaction.user.id });
+        const user = await users.findOne({ user: interaction.user.id });
+
+        if (!await validate(interaction, user as User)) return;
 
         const res = await getData(textInput, speaker || user?.voice || 'en_us_002');
         if (!res) return interaction.editReply({
-            content: `> <:dnd_status:949003440091201587> Something went wrong playing this file. A shorter text might fix it!\n${Config.ad}`
+            content: `${Emote.error} Something went wrong playing this file. A shorter text might fix it!\n${Config.ad}`
         });
 
         await interaction.editReply({
-            content: `> <:online_status:949003338186383491> Here's your audio file!\n${Config.ad}`,
+            content: `${Emote.success} Here's your audio file!\n${Config.ad}`,
             files: [res]
         });
 

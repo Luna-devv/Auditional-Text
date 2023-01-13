@@ -9,9 +9,13 @@ export const Config: ConfigType = {
 
     apis: {
         tts: '',
-        votes: ''
+
+        // can be removed if not needed
+        votes: '',
+        votes_authorization: ''
     },
 
+    // if you dont know what this does, leave it
     verification: {
         enabled: false,
     },
@@ -32,6 +36,11 @@ export const Config: ConfigType = {
             structure: { guilds: 'server_count', shards: 'shard_count' }
         }
     ]
+};
+
+export const Emote = {
+    error: '> <:dnd_status:949003440091201587>',
+    success: '> <:online_status:949003338186383491>',
 };
 
 export const Interactions = [

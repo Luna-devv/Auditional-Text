@@ -17,6 +17,7 @@
         "@typescript-eslint"
     ],
     "rules": {
+        "@typescript-eslint/ban-ts-comment": "off",
         "consistent-return": "off",
         "quotes": [
             "error",
@@ -47,7 +48,7 @@
         ],
         "no-multi-spaces": "error",
         "no-trailing-spaces": "error",
-        "no-whitespace-before-property": "error",
+        "no-whitespace-before-property": "off",
         "semi": [
             "error",
             "always"

@@ -1,22 +1,23 @@
-import { Client, CommandInteraction } from "discord.js";
-import fs from 'fs';
+import fs from 'node:fs';
 
-import { Config } from "../../config";
-import { getData } from "../../getData";
-import Users from "../../structures/user";
+import { Config } from '../../config';
+import { getData } from '../../getData';
+import { Command } from '../../typings';
+import Users from '../../structures/user';
 
 export default {
     name: 'mp3',
-    run: async (client: Client, interaction: CommandInteraction) => {
+    dm: true,
+    run: async (client, interaction) => {
 
-        //@ts-ignore
+        // @ts-expect-error I dont understand those djs typings
         const visibility: string = interaction.options.getString('visibility');
 
         await interaction.deferReply({ ephemeral: !interaction.guild?.members.me?.permissionsIn(interaction.channelId).has(['ViewChannel', 'SendMessages', 'AttachFiles']) || visibility === 'hidden' });
 
-        //@ts-ignore
+        // @ts-expect-error I dont understand those djs typings
         const textInput: string = interaction.options.getString('text');
-        //@ts-ignore
+        // @ts-expect-error I dont understand those djs typings
         const speaker: string = interaction.options.getString('speaker');
         const user = await Users.findOne({ user: interaction.user.id });
 
@@ -26,7 +27,7 @@ export default {
         });
 
         await interaction.editReply({
-            content: `> <:online_status:949003338186383491> Here\'s your audio file!\n${Config.ad}`,
+            content: `> <:online_status:949003338186383491> Here's your audio file!\n${Config.ad}`,
             files: [res]
         });
 
@@ -35,4 +36,4 @@ export default {
         }, 4 * 1000);
 
     }
-};
+} as Command;

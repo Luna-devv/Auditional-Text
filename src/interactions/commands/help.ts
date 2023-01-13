@@ -1,17 +1,18 @@
-import { Client, CommandInteraction } from "discord.js";
+import { Command } from '../../typings';
 
 export default {
     name: 'help',
-    run: async (client: Client, interaction: CommandInteraction) => {
+    dm: true,
+    run: async (client, interaction) => {
 
         interaction.reply({
             embeds: [
                 {
-                    description: `**${client.user?.username}**\nWith me you're able to either convert text to .mp3 files for you to download (\`/mp3\`), or to speak messages for you in a voice channel using \`/voice\`. Note that there is a character limit of 300.\n\n**Developers**\n[\`Luny#8888\`](https://lunish.nl/luna) - Voice Convertion, Bot\n[\`NotFound.sh#3105\`](https://tayronm.tech) - Voice Channel Management`,
+                    description: `**${client.user?.username}**\nWith me you're able to either convert text to .mp3 files for you to download (\`/mp3\`), or to speak messages for you in a voice channel using \`/voice\`. Note that there is a character limit of 300.\n\n**Developers**\n[\`Coffee Girl#8888\`](https://lunish.nl/luna) - Voice Convertion, Bot\n[\`NotFound.sh#3105\`](https://tayronm.tech) - Voice Channel Management`,
                     thumbnail: {
                         url: `https://cdn.discordapp.com/avatars/${client.user?.id}/${client.user?.avatar}.${client.user?.avatar?.startsWith('a_') ? 'gif' : 'png'}?size=1024`
                     },
-                    color: parseInt('e79da2', 16)
+                    color: 0xe79da2
                 }
             ],
             components: [
@@ -22,7 +23,7 @@ export default {
                             type: 2,
                             style: 5,
                             label: 'Learn about Waya',
-                            url: `https://waya.one`,
+                            url: 'https://waya.one',
                             emoji: '<a:c_prideblob:932368100832202783>'
                         },
                         {
@@ -45,4 +46,4 @@ export default {
         });
 
     }
-};
+} as Command;

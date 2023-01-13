@@ -1,12 +1,21 @@
-import { Collection } from "discord.js";
-import { ConfigType } from "./typings";
+import { Collection } from 'discord.js';
+import { ConfigType } from './typings';
 
 export const Config: ConfigType = {
     token: '',
     mongo: '',
     dlist: '',
-    api: '',
     ad: '',
+
+    apis: {
+        tts: '',
+        votes: ''
+    },
+
+    verification: {
+        enabled: false,
+    },
+
     data: {
         commands: new Collection(),
         events: new Collection(),
@@ -23,7 +32,7 @@ export const Config: ConfigType = {
             structure: { guilds: 'server_count', shards: 'shard_count' }
         }
     ]
-}
+};
 
 export const Interactions = [
     {
@@ -214,4 +223,4 @@ export const Interactions = [
         name: 'help',
         description: 'Need some help?',
     }
-]
+];

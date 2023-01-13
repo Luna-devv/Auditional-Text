@@ -1,25 +1,45 @@
-import { Collection } from "discord.js"
+import { Client, Collection, CommandInteraction } from 'discord.js';
 
 export type Command = {
-    name?: string
-    aliases?: string[]
-    developers?: boolean
-    run?: any
-}
+    name: string
+    dm?: boolean
+    run: (client: Client, interaction: CommandInteraction) => void
+} | undefined;
+
+export type Event = {
+    name: string;
+    once?: boolean;
+    run: (...unknown) => void
+};
 
 export type ConfigType = {
     token: string
     mongo: string
     dlist: string
-    api: string
-    ad: string;
+    ad: string
+
+    apis: {
+        tts: string;
+        votes?: string
+    }
+
+    // verify user's as real users by voting lmao
+    verification: {
+        enabled: false;
+    } | {
+        enabled: true;
+        url: string;
+        freeUse: number;
+    }
+
     data: {
         commands: Collection<string, Command>
-        events: Collection<string, any>
+        events: Collection<string, Event>
         interactions: {
             commands: Collection<string, Command>
         }
     }
+
     listings: {
         active: boolean
         url: string,

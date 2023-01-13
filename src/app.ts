@@ -1,6 +1,8 @@
-import { Client } from "discord.js";
-import { Config } from "./config";
+import { VoiceConnection } from '@discordjs/voice';
+import { Client, Collection } from 'discord.js';
 import mongoose from 'mongoose';
+
+import { Config } from './config';
 
 export const client = new Client({
     intents: 641,
@@ -9,23 +11,24 @@ export const client = new Client({
         activities: [
             {
                 type: 2,
-                name: 'waya.one fixed it'
+                name: '#0 • www.waya.one'
             }
         ]
     }
 });
 
 mongoose.connect(Config.mongo)
-    .catch(e => console.log(e));
+    .catch((e) => console.log(e));
 
-if (!(client as any)._playing) (client as any)._playing = {};
-if (!(client as any)._disconnect) (client as any)._disconnect = {};
-if (!(client as any)._connection) (client as any)._connection = {};
+export const stats = { num: 0 };
+
+export const connections = new Collection<string, VoiceConnection>();
+export const isPlaying = new Collection<string, string>();
+export const disconnect = new Collection<string, number>();
 
 const names = ['interactions', 'events'];
-names.forEach(name => {
-    require(`./handlers/${name}`).default(client);
+names.forEach(async (name) => {
+    (await import(`./handlers/${name}`)).default(client);
 });
 
-export const root = __dirname;
-client.login(Config.token)
+client.login(Config.token);

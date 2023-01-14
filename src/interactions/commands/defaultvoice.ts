@@ -1,23 +1,34 @@
-import { Config, Emote } from '../../config';
+import { CommandInteractionOptionResolver } from 'discord.js';
 import { users } from '../../structures/user';
+import { Config, Emote } from '../../config';
 import { Command } from '../../typings';
+import { speakers } from '../../app';
 
 export default {
     name: 'defaultvoice',
-    dm: true,
-    run: async (client, interaction) => {
+    description: 'What should be the default speaker used for you?',
+    options: [
+        {
+            name: 'speaker',
+            description: 'What voice should be used?',
+            type: 3,
+            choices: speakers,
+            required: true
+        }
+    ],
+    dm_permission: true,
+
+    run: async (interaction) => {
         await interaction.deferReply({ ephemeral: true });
 
         let user = await users.findOne({ user: interaction.user.id });
         if (!user) user = await users.create({ user: interaction.user.id });
 
-        // @ts-expect-error I dont understand those djs typings
-        user.voice = interaction.options.getString('speaker');
+        user.voice = (interaction.options as CommandInteractionOptionResolver).getString('speaker') || 'en_us_002';
         await user.save();
 
         interaction.editReply({
             content: `${Emote.success} Your default voice has been set to \`${user.voice}\`!\n${Config.ad}`,
         });
-
     }
 } as Command;

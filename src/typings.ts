@@ -1,55 +1,57 @@
-import { Client, Collection, CommandInteraction } from 'discord.js';
+import { APIApplicationCommandOption, Collection, CommandInteraction } from 'discord.js';
 
 export type Command = {
-    name: string
-    dm?: boolean
-    run: (client: Client, interaction: CommandInteraction) => void
-} | undefined;
+    name: string;
+    description: string;
+    options?: APIApplicationCommandOption[];
+    dm_permission?: boolean;
+
+    run: (interaction: CommandInteraction) => void;
+};
 
 export type Event = {
     name: string;
     once?: boolean;
-    run: (...unknown) => void
-};
+
+    run: (...arg0: unknown[]) => void;
+}
 
 export type ConfigType = {
-    token: string
-    mongo: string
-    dlist: string
-    ad: string
+    token: string;
+    mongo: string;
+    dlist?: string;
+    ad?: string;
 
     apis: {
         tts: string;
-        votes?: string
-        votes_authorization?: string
+        votes?: string;
+        votes_authorization?: string;
     }
 
     // verify user's as real users by voting lmao
-    verification: {
-        enabled: false;
-    } | {
+    verification: { enabled: false; } | {
         enabled: true;
         url: string;
         freeUse: number;
     }
 
     data: {
-        commands: Collection<string, Command>
-        events: Collection<string, Event>
+        commands: Collection<string, Command>;
+        events: Collection<string, Event>;
         interactions: {
-            commands: Collection<string, Command>
+            commands: Collection<string, Command>;
         }
     }
 
     listings: {
-        active: boolean
-        url: string,
-        authorization: string,
-        method: 'PATCH' | 'POST' | 'PUT',
+        active: boolean;
+        url: string;
+        authorization: string;
+        method: 'PATCH' | 'POST' | 'PUT';
         structure: {
-            guilds: string
-            shards?: string
+            guilds: string;
+            shards?: string;
         }
-        query?: boolean
+        query?: boolean;
     }[]
 }

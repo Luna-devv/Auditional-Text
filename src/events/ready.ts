@@ -1,32 +1,42 @@
-import { Client } from 'discord.js';
-import { Config, Interactions } from '../config';
-
+import { ApplicationCommandDataResolvable, Client } from 'discord.js';
 import { Client as Dlist } from 'dlist.js';
+import { Config } from '../config';
 
 export default {
     name: 'ready',
     once: true,
     run: async (client: Client) => {
+        const Interactions: ApplicationCommandDataResolvable[] = [];
+
+        Config.data.interactions.commands.forEach((command) => {
+            Interactions.push({
+                name: command.name,
+                description: command.description,
+                options: command.options,
+                dm_permission: command.dm_permission,
+            });
+        });
+
         client.application?.commands.set(Interactions);
         console.log(`\x1b[37mConnected as ${client.user?.tag}\x1b[0m`);
 
-        const dlist = new Dlist({
-            token: Config.dlist,
-            bot: client.user?.id || '',
-        });
+        if (Config.dlist) {
+            const dlist = new Dlist({
+                token: Config.dlist,
+                bot: client.user?.id || '',
+            });
 
-        if (process.platform === 'win32') return;
+            if (process.platform === 'win32') return;
 
-        dlist.postGuilds(client.guilds.cache.size);
-        postStats(client);
-        setInterval(() => {
             dlist.postGuilds(client.guilds.cache.size);
             postStats(client);
-        }, 10 * 60 * 1000);
+            setInterval(() => {
+                dlist.postGuilds(client.guilds.cache.size);
+                postStats(client);
+            }, 10 * 60 * 1000);
+        }
     }
 };
-
-
 
 function postStats(client: Client) {
     Config.listings.forEach(async (listing) => {
@@ -53,6 +63,5 @@ function postStats(client: Client) {
         }).catch((error) => {
             if (!error.message?.includes('520')) console.log(listing.url.split('//')[1].split('/')[0], error);
         });
-
     });
 }

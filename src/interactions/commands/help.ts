@@ -2,15 +2,16 @@ import { Command } from '../../typings';
 
 export default {
     name: 'help',
-    dm: true,
-    run: async (client, interaction) => {
+    description: 'Need some help?',
+    dm_permission: true,
 
+    run: async (interaction) => {
         interaction.reply({
             embeds: [
                 {
-                    description: `**${client.user?.username}**\nWith me you're able to either convert text to .mp3 files for you to download (\`/mp3\`), or to speak messages for you in a voice channel using \`/voice\`. Note that there is a character limit of 300.\n\n**Developers**\n[\`Coffee Girl#8888\`](https://lunish.nl/luna) - Voice Convertion, Bot\n[\`NotFound.sh#3105\`](https://tayronm.tech) - Voice Channel Management`,
+                    description: `**${interaction.client.user?.username}**\nWith me you're able to either convert text to .mp3 files for you to download (\`/mp3\`), or to speak messages for you in a voice channel using \`/voice\`. Note that there is a character limit of 300.\n\n**Developers**\n[\`Coffee Girl#8888\`](https://lunish.nl/luna) - Voice Conversion, Bot\n[\`NotFound.sh#3105\`](https://tayronm.tech) - Voice Channel Management`,
                     thumbnail: {
-                        url: `https://cdn.discordapp.com/avatars/${client.user?.id}/${client.user?.avatar}.${client.user?.avatar?.startsWith('a_') ? 'gif' : 'png'}?size=1024`
+                        url: `https://cdn.discordapp.com/avatars/${interaction.client.user?.id}/${interaction.client.user?.avatar}.${interaction.client.user?.avatar?.startsWith('a_') ? 'gif' : 'png'}?size=1024`
                     },
                     color: 0xe79da2
                 }
@@ -44,6 +45,5 @@ export default {
                 }
             ]
         });
-
     }
 } as Command;

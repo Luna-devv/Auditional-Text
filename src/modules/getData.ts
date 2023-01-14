@@ -1,8 +1,8 @@
-import { Config, Emote } from '../config';
+import { Config } from '../config';
 import fs from 'node:fs';
 
 export async function getData(text: string, voice: string): Promise<string | null> {
-    const name = `${process.cwd()}/${new Date().getTime()}.mp3`;
+    const name = `${process.cwd()}/../audio/${new Date().getTime()}.mp3`;
 
     const res = await fetch(Config.apis.tts + '/api/generation', {
         method: 'POST',

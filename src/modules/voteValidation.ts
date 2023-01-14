@@ -1,6 +1,6 @@
+import { users, User } from '../structures/user';
 import { CommandInteraction } from 'discord.js';
 import { Config, Emote } from '../config';
-import { users, User } from '../structures/user';
 
 /*
 *   True: can run command
@@ -77,7 +77,6 @@ export async function validate(interaction: CommandInteraction, user: User | und
 
         return false;
     }
-
 
     return true;
 }

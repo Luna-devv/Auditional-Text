@@ -36,7 +36,7 @@ export async function validate(interaction: CommandInteraction, user: User | und
 
     if (!res?.ok) {
         interaction.editReply({
-            content: `${Emote.error} There was an error talking with our database...\n${Config.ad}`
+            content: `${Emote.error} There was an error talking with our database..\n${Config.ad}`
         });
 
         throw new Error(`There was an error fetching from "${Config.apis.votes}/${interaction.user.id}"`);
@@ -45,7 +45,7 @@ export async function validate(interaction: CommandInteraction, user: User | und
     const data = await res.json();
 
     if (user.votes.voteEndsCache !== data.message && data.message) {
-        console.log(`\x1b[44m${interaction.user.id} maybe voted, idk\x1b[0m`);
+        console.log(`\x1b[44m${interaction.user.id} maybe voted.\x1b[0m`);
         user.votes.voteEndsCache = new Date(data.message ?? 0);
         user.save();
     }

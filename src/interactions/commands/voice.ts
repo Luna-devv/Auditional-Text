@@ -1,7 +1,7 @@
 import { joinVoiceChannel, createAudioPlayer, createAudioResource } from '@discordjs/voice';
 import { connections, isPlaying, disconnect, speakers } from '../../app';
-import { getAudioDurationInSeconds } from 'get-audio-duration';
 import { CommandInteractionOptionResolver } from 'discord.js';
+import getAudioDurationInSeconds from 'get-audio-duration';
 import { validate } from '../../modules/voteValidation';
 import { User, users } from '../../structures/user';
 import { getData } from '../../modules/getData';
@@ -84,7 +84,7 @@ export default {
         connection.subscribe(player);
         player.play(resource);
 
-        await interaction.editReply({ content: `${Emote.success} Now playing in <#${member?.voice.channelId}>, it's **${duration} seconds** long\n${Config.ad}` });
+        await interaction.editReply({ content: `${Emote.success} Now playing in <#${member?.voice.channelId}>, it's **${duration} seconds** long.\n${Config.ad}` });
 
         setTimeout(() => {
             fs.unlink(res, () => null);

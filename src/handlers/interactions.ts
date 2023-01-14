@@ -3,7 +3,7 @@ import { Config } from '../config';
 import path from 'node:path';
 
 export default async function () {
-    const commands = readdirSync(path.join('.', 'dist', 'interactions', 'commands')).filter((file) => file.endsWith('.js'));
+    const commands = readdirSync(path.join('..', 'dist', 'interactions', 'commands')).filter((file) => file.endsWith('.js'));
 
     for (const file of commands) {
         const pull = (await import(`../interactions/commands/${file}`)).default;

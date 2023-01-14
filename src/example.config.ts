@@ -4,6 +4,7 @@ import { ConfigType } from './typings';
 export const Config: ConfigType = {
     token: '',
     mongo: '',
+
     dlist: '',
     ad: '',
 
@@ -19,6 +20,8 @@ export const Config: ConfigType = {
     verification: {
         enabled: false,
     },
+
+    shards: 2,
 
     data: {
         commands: new Collection(),

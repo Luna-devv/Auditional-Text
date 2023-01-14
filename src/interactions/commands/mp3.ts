@@ -60,7 +60,10 @@ export default {
 
         await interaction.editReply({
             content: `${Emote.success} Here's your audio file!\n${Config.ad}`,
-            files: [res]
+            files: [{
+                attachment: res,
+                name: 'audio.mp3'
+            }]
         });
 
         setTimeout(() => {

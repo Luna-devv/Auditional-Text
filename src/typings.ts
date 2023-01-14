@@ -35,6 +35,8 @@ export type ConfigType = {
         freeUse: number;
     }
 
+    shards: number;
+
     data: {
         commands: Collection<string, Command>;
         events: Collection<string, Event>;

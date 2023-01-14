@@ -46,8 +46,8 @@ process.env.NODE_NO_WARNINGS = '1';
 
 // ------------------------------- mongoose
 
-mongoose.connect(Config.mongo).catch((e) => console.log(e));
 mongoose.set('strictQuery', true);
+mongoose.connect(Config.mongo).catch((e) => console.log(e));
 
 // ------------------------------- export
 
@@ -142,3 +142,13 @@ export const speakers = [
         value: 'en_us_rocket'
     }
 ];
+
+// ------------------------------- process
+
+process.on('unhandledRejection', (error) => {
+    console.error('Unhandled promise rejection:', error);
+});
+
+process.on('uncaughtException', (error) => {
+    console.error('Uncaught exception:', error);
+});

@@ -18,7 +18,6 @@ export default {
         });
 
         client.application?.commands.set(Interactions);
-        console.log(`\x1b[37mConnected as ${client.user?.tag}\x1b[0m`);
 
         if (Config.dlist) {
             const dlist = new Dlist({

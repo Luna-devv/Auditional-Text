@@ -1,4 +1,5 @@
 import { CommandInteractionOptionResolver } from 'discord.js';
+
 import { users } from '../../structures/user';
 import { Config, Emote } from '../../config';
 import { Command } from '../../typings';

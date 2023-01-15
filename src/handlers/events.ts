@@ -1,7 +1,8 @@
 import { readdirSync } from 'node:fs';
 import { Client } from 'discord.js';
-import { Event } from '../typings';
 import path from 'node:path';
+
+import { Event } from '../typings';
 
 export default async function (client: Client) {
     const eventFiles = readdirSync(path.join('..', 'dist', 'events')).filter((file) => file.endsWith('.js'));

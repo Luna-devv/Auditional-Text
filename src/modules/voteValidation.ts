@@ -1,11 +1,13 @@
-import { users, User } from '../structures/user';
 import { CommandInteraction } from 'discord.js';
+
+import { users, User } from '../structures/user';
 import { Config, Emote } from '../config';
 
 /*
 *   True: can run command
 *   False: must vote / error happened
 */
+
 export async function validate(interaction: CommandInteraction, user: User | undefined): Promise<true | false> {
     if (new Date().getDay() !== 5 && new Date().getDay() !== 6 && new Date().getDay() !== 7) return true;
     if (!Config.verification.enabled) return true;

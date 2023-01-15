@@ -1,6 +1,7 @@
 import { readdirSync } from 'node:fs';
-import { Config } from '../config';
 import path from 'node:path';
+
+import { Config } from '../config';
 
 export default async function () {
     const commands = readdirSync(path.join('..', 'dist', 'interactions', 'commands')).filter((file) => file.endsWith('.js'));

@@ -1,6 +1,7 @@
-import { Config } from '../config';
 import path from 'node:path';
 import fs from 'node:fs';
+
+import { Config } from '../config';
 
 export async function getData(text: string, voice: string): Promise<string | null> {
     const fileName = randomCode(10);

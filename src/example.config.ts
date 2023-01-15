@@ -1,4 +1,5 @@
 import { Collection } from 'discord.js';
+
 import { ConfigType } from './typings';
 
 export const Config: ConfigType = {
@@ -21,7 +22,7 @@ export const Config: ConfigType = {
         enabled: false,
     },
 
-    shards: 2,
+    shards: 'auto',
 
     data: {
         commands: new Collection(),

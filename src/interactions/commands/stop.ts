@@ -27,7 +27,7 @@ export default {
             disconnect.delete(interaction.guildId || '');
         } catch (e) { console.log(e); }
 
-        interaction.reply({
+        interaction.editReply({
             content: `${Emote.success} I did it, and I am proud of it.\n${Config.ad}`,
         });
     }

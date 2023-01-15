@@ -1,11 +1,12 @@
 import { CommandInteractionOptionResolver } from 'discord.js';
+import fs from 'node:fs';
+
 import { validate } from '../../modules/voteValidation';
 import { User, users } from '../../structures/user';
 import { getData } from '../../modules/getData';
 import { Config, Emote } from '../../config';
 import { Command } from '../../typings';
 import { speakers } from '../../app';
-import fs from 'node:fs';
 
 export default {
     name: 'mp3',
@@ -43,12 +44,12 @@ export default {
     dm_permission: true,
 
     run: async (interaction) => {
-        const visibility: string = (interaction.options as CommandInteractionOptionResolver).getString('visibility') || 'visible';
+        const visibility = (interaction.options as CommandInteractionOptionResolver).getString('visibility') || 'visible';
 
         await interaction.deferReply({ ephemeral: !interaction.guild?.members.me?.permissionsIn(interaction.channelId).has(['ViewChannel', 'SendMessages', 'AttachFiles']) || visibility === 'hidden' });
 
-        const textInput: string = (interaction.options as CommandInteractionOptionResolver).getString('text') || 'No text provided';
-        const speaker: string = (interaction.options as CommandInteractionOptionResolver).getString('speaker') || 'en_us_002';
+        const textInput = (interaction.options as CommandInteractionOptionResolver).getString('text') || 'No text provided';
+        const speaker = (interaction.options as CommandInteractionOptionResolver).getString('speaker') || 'en_us_002';
 
         const user = await users.findOne({ user: interaction.user.id });
         if (!await validate(interaction, user as User)) return;
@@ -62,7 +63,7 @@ export default {
             content: `${Emote.success} Here's your audio file!\n${Config.ad}`,
             files: [{
                 attachment: res,
-                name: 'audio.mp3'
+                name: new Date().toISOString().replace('T', ' ').replace('Z', '') + '.mp3'
             }]
         });
 

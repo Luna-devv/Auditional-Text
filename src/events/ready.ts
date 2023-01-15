@@ -1,5 +1,6 @@
 import { ApplicationCommandDataResolvable, Client } from 'discord.js';
 import { Client as Dlist } from 'dlist.js';
+
 import { Config } from '../config';
 
 export default {
@@ -19,25 +20,26 @@ export default {
 
         client.application?.commands.set(Interactions);
 
-        if (Config.dlist) {
-            const dlist = new Dlist({
-                token: Config.dlist,
-                bot: client.user?.id || '',
-            });
+        if (process.platform === 'win32' || client.shard?.ids[0] !== 0) return;
 
-            if (process.platform === 'win32') return;
+        const dlist = new Dlist({
+            token: Config.dlist,
+            bot: client.user?.id || '',
+        });
 
-            dlist.postGuilds(client.guilds.cache.size);
-            postStats(client);
-            setInterval(() => {
-                dlist.postGuilds(client.guilds.cache.size);
-                postStats(client);
-            }, 10 * 60 * 1000);
-        }
+        const guildCount = (await client.shard?.fetchClientValues('guilds.cache.size') as unknown as number[]).reduce((prev: number, val: number) => prev + val, 0);
+
+        dlist.postGuilds(guildCount);
+        postStats(client, guildCount);
+
+        setInterval(() => {
+            dlist.postGuilds(guildCount);
+            postStats(client, guildCount);
+        }, 10 * 60 * 1000);
     }
 };
 
-function postStats(client: Client) {
+function postStats(client: Client, guildCount: number) {
     Config.listings.forEach(async (listing) => {
         if (!listing.active) return;
 
@@ -45,10 +47,10 @@ function postStats(client: Client) {
         const body = {};
 
         if (listing.query) {
-            if (listing.structure.guilds) params += `?${listing.structure.guilds}=${client.guilds.cache.size}`;
+            if (listing.structure.guilds) params += `?${listing.structure.guilds}=${guildCount}`;
             if (listing.structure.shards) params += `&${listing.structure.shards}=${client.options.shardCount}`;
         } else {
-            if (listing.structure.guilds) body[listing.structure.guilds] = client.guilds.cache.size;
+            if (listing.structure.guilds) body[listing.structure.guilds] = guildCount;
             if (listing.structure.shards) body[listing.structure.shards] = client.options.shardCount;
         }
 

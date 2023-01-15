@@ -1,13 +1,14 @@
 import { joinVoiceChannel, createAudioPlayer, createAudioResource } from '@discordjs/voice';
-import { connections, isPlaying, disconnect, speakers } from '../../app';
 import { CommandInteractionOptionResolver } from 'discord.js';
 import getAudioDurationInSeconds from 'get-audio-duration';
+import fs from 'node:fs';
+
+import { connections, isPlaying, disconnect, speakers } from '../../app';
 import { validate } from '../../modules/voteValidation';
 import { User, users } from '../../structures/user';
 import { getData } from '../../modules/getData';
 import { Config, Emote } from '../../config';
 import { Command } from '../../typings';
-import fs from 'node:fs';
 
 export default {
     name: 'voice',

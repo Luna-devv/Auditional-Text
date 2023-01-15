@@ -19,8 +19,8 @@ export type Event = {
 export type ConfigType = {
     token: string;
     mongo: string;
-    dlist?: string;
-    ad?: string;
+    dlist: string;
+    ad: string;
 
     apis: {
         tts: string;
@@ -35,7 +35,7 @@ export type ConfigType = {
         freeUse: number;
     }
 
-    shards: number;
+    shards: number | 'auto';
 
     data: {
         commands: Collection<string, Command>;

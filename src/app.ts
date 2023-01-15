@@ -1,9 +1,12 @@
 import { Client, Collection, GatewayIntentBits, Options } from 'discord.js';
 import { VoiceConnection } from '@discordjs/voice';
-import { Config } from './config';
 import mongoose from 'mongoose';
 
+import { Config } from './config';
+
 // ------------------------------- load client
+
+process.env.NODE_NO_WARNINGS = '1';
 
 export const client = new Client({
     intents: [
@@ -41,8 +44,6 @@ export const client = new Client({
         UserManager: 0,
     }), // yes
 });
-
-process.env.NODE_NO_WARNINGS = '1';
 
 // ------------------------------- mongoose
 

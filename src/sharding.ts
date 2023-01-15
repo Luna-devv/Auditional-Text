@@ -1,4 +1,5 @@
 import { ShardingManager } from 'discord.js';
+
 import { Boot, Config } from './config';
 
 // ------------------------------- start shards
@@ -30,13 +31,3 @@ try {
 } catch (e) {
     console.log(e);
 }
-
-// ------------------------------- clean console
-
-const originalEmit = process.emit;
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-(process.emit as unknown) = function (name: string, data: { name: string; }, ...args: unknown[]) {
-    if (name === 'warning' && typeof data === 'object' && data.name === 'ExperimentalWarning') return false;
-    // eslint-disable-next-line prefer-rest-params
-    return originalEmit.apply(process, arguments as unknown as Parameters<typeof process.emit>);
-};

@@ -6,8 +6,6 @@ import { Config } from './config';
 
 // ------------------------------- load client
 
-process.env.NODE_NO_WARNINGS = '1';
-
 export const client = new Client({
     intents: [
         GatewayIntentBits.Guilds,

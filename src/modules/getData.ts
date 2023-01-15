@@ -1,10 +1,15 @@
-import { Config, Emote } from '../config';
+import path from 'node:path';
 import fs from 'node:fs';
 
-export async function getData(text: string, voice: string): Promise<string | null> {
-    const name = `${process.cwd()}/${new Date().getTime()}.mp3`;
+import { Config } from '../config';
 
-    const res = await fetch(Config.apis.tts + '/api/generation', {
+export async function getData(text: string, voice: string): Promise<string | null> {
+    const fileName = randomCode(10);
+    const name = path.join(__dirname, '..', 'audio', fileName + '.mp3');
+
+    if (!fs.existsSync(path.join(__dirname, '..', 'audio'))) fs.mkdirSync(path.join(__dirname, '..', 'audio'));
+
+    const data = await fetch(Config.apis.tts + '/api/generation', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -13,10 +18,26 @@ export async function getData(text: string, voice: string): Promise<string | nul
             'text': text,
             'voice': voice
         })
-    })
-        .then(async (_res) => await _res.json())
-        .catch(console.error);
+    }).then(async (res) => await res.json()).catch(console.error);
 
-    fs.writeFileSync(name, Buffer.from(res?.data?.replace?.('data:audio/mp3; codecs=opus;base64,', ''), 'base64'));
-    return res?.data ? name : null;
+    try {
+        fs.writeFileSync(name, Buffer.from(data?.data?.replace?.('data:audio/mp3; codecs=opus;base64,', ''), 'base64'));
+        return name;
+    } catch (e) {
+        console.error(e);
+        return null;
+    }
+}
+
+function randomCode(length: number): string {
+    let result = '';
+
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    const charactersLength = characters.length;
+
+    for (let i = 0; i < length; i++) {
+        result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+
+    return result;
 }

@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-const schema = new mongoose.Schema({
+const schema = new mongoose.Schema<User>({
     user: { type: String, required: true, unique: true },
     voice: { type: String, required: true, default: 'en_us_002' },
 
@@ -10,7 +10,7 @@ const schema = new mongoose.Schema({
     }
 });
 
-export const users = mongoose.model('user', schema);
+export const users = mongoose.model<User>('user', schema);
 
 export type User = {
     user: string;

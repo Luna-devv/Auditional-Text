@@ -1,5 +1,4 @@
 import { CommandInteractionOptionResolver } from 'discord.js';
-import { connections, disconnect, isPlaying } from '../../app';
 import { Config, Emote } from '../../config';
 import { Command } from '../../typings';
 import { guilds } from '../../structures/guilds';
@@ -27,6 +26,10 @@ export default {
 
     run: async (interaction) => {
         await interaction.deferReply({ ephemeral: true }).catch(() => null);
+
+        if (!interaction.memberPermissions?.has('ManageGuild')) return interaction.editReply({
+            content: `${Emote.error} You are missing \`ManageGuild\` permissions.\n${Config.ad}`
+        });
 
         let guild = await guilds.findOne({ guild: interaction.guildId });
         if (!guild) guild = await guilds.create({ guild: interaction.guildId });

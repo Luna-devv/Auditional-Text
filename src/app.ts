@@ -9,15 +9,14 @@ import { Config } from './config';
 export const client = new Client({
     intents: [
         GatewayIntentBits.Guilds,
-        GatewayIntentBits.GuildMembers,
         GatewayIntentBits.GuildVoiceStates,
     ],
     presence: {
-        status: 'online',
+        status: 'idle',
         activities: [
             {
                 type: 2,
-                name: '#0 • www.waya.one'
+                name: 'Connecting...'
             }
         ]
     },

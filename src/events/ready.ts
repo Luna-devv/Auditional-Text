@@ -9,6 +9,17 @@ export default {
     run: async (client: Client) => {
         const Interactions: ApplicationCommandDataResolvable[] = [];
 
+        client.user?.setPresence({
+            status: 'online',
+            activities: [
+                {
+                    type: 2,
+                    name: `#${client.shard?.ids[0]} • www.waya.one`,
+                    url: 'https://www.youtube.com/watch?v=lwMmGjgT_e0'
+                }
+            ]
+        });
+
         Config.data.interactions.commands.forEach((command) => {
             Interactions.push({
                 name: command.name,

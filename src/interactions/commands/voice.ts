@@ -1,5 +1,6 @@
 import { joinVoiceChannel, createAudioPlayer, createAudioResource } from '@discordjs/voice';
 import { CommandInteractionOptionResolver } from 'discord.js';
+// @ts-ignore no types for package :(
 import getAudioDurationInSeconds from 'get-audio-duration';
 import fs from 'node:fs';
 
@@ -9,6 +10,7 @@ import { User, users } from '../../structures/user';
 import { getData } from '../../modules/getData';
 import { Config, Emote } from '../../config';
 import { Command } from '../../typings';
+import { guilds } from '../../structures/guilds';
 
 export default {
     name: 'voice',
@@ -53,6 +55,7 @@ export default {
             ephemeral: true
         });
 
+        if (!interaction.guild?.voiceAdapterCreator) return;
         await interaction.deferReply().catch(() => null);
 
         const textInput: string = (interaction.options as CommandInteractionOptionResolver).getString('text') || '';
@@ -65,9 +68,9 @@ export default {
         if (!res) return interaction.editReply({
             content: `${Emote.error} Something went wrong playing this file. A shorter text might fix it!\n${Config.ad}`
         });
+        const guild = await guilds.findOne({ guild: interaction.guildId });
 
-        const duration = await getAudioDurationInSeconds(res);
-        if (!interaction.guild?.voiceAdapterCreator) return;
+        const duration: number = await getAudioDurationInSeconds(res);
 
         const connection = joinVoiceChannel({
             adapterCreator: interaction.guild?.voiceAdapterCreator,
@@ -85,7 +88,7 @@ export default {
         connection.subscribe(player);
         player.play(resource);
 
-        await interaction.editReply({ content: `${Emote.success} Now playing in <#${member?.voice.channelId}>, it's **${duration} seconds** long.\n${Config.ad}` });
+        await interaction.editReply({ content: `${Emote.success} Now playing in <#${member?.voice.channelId}> for **${duration} seconds**.\n${Config.ad}` });
 
         setTimeout(() => {
             fs.unlink(res, () => null);
@@ -93,7 +96,7 @@ export default {
         }, (duration * 1000) + 1000);
 
         setTimeout(() => {
-            if (((disconnect.get(interaction.guildId || '') ?? 0) + ((duration * 1000) + 30_000)) < new Date().getTime()) {
+            if (((disconnect.get(interaction.guildId || '') ?? 0) + ((duration * 1000) + (guild?.voiceTimeout ?? 30) * 1000)) < new Date().getTime()) {
                 try {
                     connection.disconnect();
                     isPlaying.delete(interaction.guildId || '');
@@ -101,6 +104,6 @@ export default {
                     disconnect.delete(interaction.guildId || '');
                 } catch (e) { console.log(e); }
             }
-        }, (duration * 1000) + 30_000);
+        }, (duration * 1000) + (guild?.voiceTimeout ?? 30) * 1000);
     }
 } as Command;

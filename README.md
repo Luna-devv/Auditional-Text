@@ -7,7 +7,7 @@ Note that not all slurs or 'new' words will work (correctly), some might be skip
 
 ![example image](https://c.lunish.nl/r/U78GX4.png)
 
-### voices
+### Voices
 This here are all voices you can choose from, note that each voice only really works with the designed langauge, else it might sound a bit off haha.
 - **EN**-us Female
 - **EN**-us Male

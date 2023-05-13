@@ -20,7 +20,9 @@ export type ConfigType = {
     token: string;
     mongo: string;
     dlist: string;
+
     ad: string;
+    guildLogging: string;
 
     apis: {
         tts: string;

@@ -13,7 +13,7 @@ export default {
             status: 'online',
             activities: [
                 {
-                    type: 2,
+                    type: 1,
                     name: `#${client.shard?.ids[0]} • www.waya.one`,
                     url: 'https://www.youtube.com/watch?v=lwMmGjgT_e0'
                 }
@@ -43,7 +43,8 @@ export default {
         dlist.postGuilds(guildCount);
         postStats(client, guildCount);
 
-        setInterval(() => {
+        setInterval(async () => {
+            const guildCount = (await client.shard?.fetchClientValues('guilds.cache.size') as unknown as number[]).reduce((prev: number, val: number) => prev + val, 0);
             dlist.postGuilds(guildCount);
             postStats(client, guildCount);
         }, 10 * 60 * 1000);

@@ -11,15 +11,6 @@ export const client = new Client({
         GatewayIntentBits.Guilds,
         GatewayIntentBits.GuildVoiceStates,
     ],
-    presence: {
-        status: 'idle',
-        activities: [
-            {
-                type: 2,
-                name: 'Connecting...'
-            }
-        ]
-    },
     makeCache: Options.cacheWithLimits({
         ...Options.DefaultMakeCacheSettings,
         AutoModerationRuleManager: 0,

@@ -9,7 +9,7 @@ import { Config, Emote } from '../config';
 */
 
 export async function validate(interaction: CommandInteraction, user: User | undefined): Promise<true | false> {
-    if (new Date().getDay() !== 5 && new Date().getDay() !== 6 && new Date().getDay() !== 7) return true;
+    if (new Date().getDay() !== 5 && new Date().getDay() !== 6 && new Date().getDay() !== 0) return true;
     if (!Config.verification.enabled) return true;
 
     if (!Config.apis.votes) throw new TypeError('"api.votes" was not defined but "verification.enabled" is set to true.');
@@ -36,7 +36,7 @@ export async function validate(interaction: CommandInteraction, user: User | und
         }
     }).catch(() => null);
 
-    if (!res?.ok) {
+    if (!res?.ok && res?.status !== 400) {
         interaction.editReply({
             content: `${Emote.error} There was an error talking with our database..\n${Config.ad}`
         });
@@ -46,13 +46,13 @@ export async function validate(interaction: CommandInteraction, user: User | und
 
     const data = await res.json();
 
-    if (user.votes.voteEndsCache !== data.message && data.message) {
+    if ((user.votes.voteEndsCache !== data.message) && (typeof data.message === 'number')) {
         console.log(`\x1b[44m${interaction.user.id} maybe voted.\x1b[0m`);
         user.votes.voteEndsCache = new Date(data.message ?? 0);
         user.save();
     }
 
-    if (new Date(data.message).getTime() < new Date().getTime()) {
+    if (new Date(data.message ?? 0).getTime() < new Date().getTime()) {
         interaction.editReply({
             content: `${Config.ad}`,
             embeds: [

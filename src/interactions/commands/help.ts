@@ -9,7 +9,7 @@ export default {
         interaction.reply({
             embeds: [
                 {
-                    description: `**${interaction.client.user?.username}**\nWith me you're able to either convert text to .mp3 files for you to download (\`/mp3\`), or to speak messages for you in a voice channel using \`/voice\`. Note that there is a character limit of 300.\n\n**Developers**\n[\`Coffee Girl#8888\`](https://lunish.nl/luna) - Voice Conversion, Bot\n[\`NotFound.sh#3105\`](https://tayronm.tech) - Voice Channel Management`,
+                    description: `**${interaction.client.user?.username}**\nWith me you're able to either convert text to .mp3 files for you to download (</mp3:1004817057768034314>), or to speak messages for you in a voice channel using </voice:1004817057768034315>. Note that there is a character limit of 300.\n\n**Developers**\n[\`Coffee Girl#8888\`](https://lunish.nl?utm_source=Auditional+Text&utm_content=help+command) - Voice Conversion, Bot\n[\`Luna's Girlfriend\`](https://crni.xyz/?utm_source=Auditional+Text&utm_content=help+command) - Stable code`,
                     thumbnail: {
                         url: `https://cdn.discordapp.com/avatars/${interaction.client.user?.id}/${interaction.client.user?.avatar}.${interaction.client.user?.avatar?.startsWith('a_') ? 'gif' : 'png'}?size=1024`
                     },

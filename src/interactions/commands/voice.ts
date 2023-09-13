@@ -34,11 +34,6 @@ export default {
 
     run: async (interaction) => {
 
-        if (!interaction.guild?.members.me?.permissionsIn(interaction.channel?.id || '').has(['ViewChannel', 'SendMessages'])) return interaction.reply({
-            content: `${Emote.error} I'm not able to send messages in this channel.\n${Config.ad}`,
-            ephemeral: true
-        });
-
         const member = interaction.guild?.members.cache.get(interaction.user.id) || await interaction.guild?.members.fetch(interaction.user.id).catch(() => null);
         if (!member?.voice.channelId) return interaction.reply({
             content: `${Emote.error} You're not connected to any Voice Channels.\n${Config.ad}`,
@@ -56,7 +51,7 @@ export default {
         });
 
         if (!interaction.guild?.voiceAdapterCreator) return;
-        await interaction.deferReply().catch(() => null);
+        await interaction.deferReply({ ephemeral: !interaction.guild?.members.me?.permissionsIn(interaction.channelId).has(['ViewChannel', 'SendMessages']) }).catch(() => null);
 
         const textInput: string = (interaction.options as CommandInteractionOptionResolver).getString('text') || '';
         const speaker: string = (interaction.options as CommandInteractionOptionResolver).getString('speaker') || '';

@@ -23,16 +23,16 @@ export default {
                         {
                             type: 2,
                             style: 5,
-                            label: 'Learn about Waya',
+                            label: 'About Waya',
                             url: 'https://waya.one',
-                            emoji: '<a:c_prideblob:932368100832202783>'
+                            emoji: '<:c_prideblob:932368100832202783>'
                         },
                         {
                             type: 2,
                             style: 5,
-                            label: 'Invite Auditional Text',
-                            url: 'https://discord.com/api/oauth2/authorize?client_id=985213199248924722&permissions=3197952&scope=bot%20applications.commands',
-                            emoji: '<:icons_audioenable:875395222291513354>'
+                            label: 'Support Server',
+                            url: 'https://discord.com/invite/w4QY2mhe3x',
+                            emoji: '<:icons_discord:988409375905443900>'
                         },
                         {
                             type: 2,
@@ -41,9 +41,28 @@ export default {
                             url: 'https://top.gg/bot/985213199248924722/vote',
                             emoji: '<:icons_topgg:988409375905443900>'
                         },
-                    ]
-                }
-            ]
+                    ],
+                },
+                {
+                    type: 1,
+                    components: [
+                        {
+                            type: 2,
+                            style: 5,
+                            label: 'Invite Auditional Text',
+                            url: 'https://discord.com/api/oauth2/authorize?client_id=985213199248924722&permissions=3197952&scope=bot%20applications.commands',
+                            emoji: '<:TTS:1111729122025156708>'
+                        },
+                        {
+                            type: 2,
+                            style: 5,
+                            label: 'Invite Textional Voice',
+                            url: 'https://discord.com/api/oauth2/authorize?client_id=1097907896987160666&permissions=309239007232&scope=applications.commands%20bot',
+                            emoji: '<:VTT:1111728972158472383>'
+                        },
+                    ],
+                },
+            ],
         });
     }
 } as Command;

@@ -46,13 +46,13 @@ export async function validate(interaction: CommandInteraction, user: User | und
 
     const data = await res.json();
 
-    if ((user.votes.voteEndsCache !== data.message) && (typeof data.message === 'number')) {
+    if (user.votes.voteEndsCache !== data.message && !isNaN(data.message)) {
         console.log(`\x1b[44m${interaction.user.id} maybe voted.\x1b[0m`);
         user.votes.voteEndsCache = new Date(data.message ?? 0);
         user.save();
     }
 
-    if (new Date(data.message ?? 0).getTime() < new Date().getTime()) {
+    if (new Date(data.message ?? 0).getTime() < new Date().getTime() || isNaN(data.message)) {
         interaction.editReply({
             content: `${Config.ad}`,
             embeds: [

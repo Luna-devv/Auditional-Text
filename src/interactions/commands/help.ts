@@ -25,30 +25,21 @@ export default {
                             style: 5,
                             label: 'About Waya',
                             url: 'https://waya.one',
-                            emoji: {
-                                id: '932368100832202783',
-                                name: 'c_prideblob',
-                            },
+                            emoji: '<:c_prideblob:932368100832202783>'
                         },
                         {
                             type: 2,
                             style: 5,
                             label: 'Support Server',
                             url: 'https://discord.com/invite/w4QY2mhe3x',
-                            emojis: {
-                                id: '988409375905443900',
-                                name: 'icons_discord',
-                            },
+                            emoji: '<:icons_discord:988409375905443900>'
                         },
                         {
                             type: 2,
                             style: 5,
                             label: 'Vote for Auditional Text',
                             url: 'https://top.gg/bot/985213199248924722/vote',
-                            emojis: {
-                                id: '988409375905443900',
-                                name: 'icons_topgg',
-                            },
+                            emoji: '<:icons_topgg:988409375905443900>'
                         },
                     ],
                 },
@@ -60,20 +51,14 @@ export default {
                             style: 5,
                             label: 'Invite Auditional Text',
                             url: 'https://discord.com/api/oauth2/authorize?client_id=985213199248924722&permissions=3197952&scope=bot%20applications.commands',
-                            emojis: {
-                                id: '1111729122025156708',
-                                name: 'TTS',
-                            },
+                            emoji: '<:TTS:1111729122025156708>'
                         },
                         {
                             type: 2,
                             style: 5,
                             label: 'Invite Textional Voice',
                             url: 'https://discord.com/api/oauth2/authorize?client_id=1097907896987160666&permissions=309239007232&scope=applications.commands%20bot',
-                            emojis: {
-                                id: '1111728972158472383',
-                                name: 'VTT',
-                            },
+                            emoji: '<:VTT:1111728972158472383>'
                         },
                     ],
                 },

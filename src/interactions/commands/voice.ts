@@ -20,7 +20,7 @@ export default {
             name: 'text',
             description: 'What text should get transformed?',
             type: 3,
-            max_value: 300,
+            maxLength: 300,
             required: true
         },
         {
@@ -61,7 +61,7 @@ export default {
 
         const res = await getData(textInput, speaker || user?.voice || 'en_us_002');
         if (!res) return interaction.editReply({
-            content: `${Emote.error} Something went wrong playing this file. A shorter text might fix it!\n${Config.ad}`
+            content: `${Emote.error} Something went wrong playing this file. This often happens because of a language-input missmatch!\n${Config.ad}`
         });
         const guild = await guilds.findOne({ guild: interaction.guildId });
 

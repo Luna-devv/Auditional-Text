@@ -1,0 +1,6 @@
+version: '3'
+services:
+  tts:
+    container_name: tts
+    image: tts
+    restart: unless-stopped

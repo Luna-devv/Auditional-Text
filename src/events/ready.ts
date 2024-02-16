@@ -16,7 +16,7 @@ export default {
                 {
                     type: 4,
                     name: '<a:emoji_174:948133729535135744>',
-                    state: `#${client.shard?.ids[0]} • wamellow.com`,
+                    state: `#${client.shard?.ids[0]} • wamellow.com`
                 }
             ]
         });

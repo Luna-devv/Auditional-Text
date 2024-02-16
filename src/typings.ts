@@ -6,7 +6,7 @@ export type Command = {
     options?: APIApplicationCommandOption[];
     dm_permission?: boolean;
 
-    run: (interaction: CommandInteraction) => void;
+    run: (interaction: CommandInteraction) => Promise<void>;
 };
 
 export type ContextCommand = {

@@ -16,7 +16,7 @@ export default {
             name: 'text',
             description: 'What text should get transformed?',
             type: 3,
-            max_value: 300,
+            maxLength: 300,
             required: true
         },
         {
@@ -56,11 +56,11 @@ export default {
 
         const res = await getData(textInput, speaker || user?.voice || 'en_us_002');
         if (!res) return interaction.editReply({
-            content: `${Emote.error} Something went wrong playing this file. A shorter text might fix it!\n${Config.ad}`
+            content: `${Emote.error} Something went wrong playing this file. This often happens because of a language-input missmatch!\n${Config.ad}`
         });
 
         await interaction.editReply({
-            content: `${Emote.success} Here's your audio file!\n${Config.ad}`,
+            content: Config.ad,
             files: [{
                 attachment: res,
                 name: new Date().toISOString().replace('T', ' ').replace('Z', '') + '.mp3'

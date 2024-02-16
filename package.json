@@ -1,4 +1,28 @@
 {
+  "name": "discord-tts",
+  "version": "2.0.0",
+  "main": "dist/sharding.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "node ./dist/sharding.js",
+    "build": "npx tsc"
+  },
+  "dependencies": {
+    "@discordjs/voice": "^0.16.1",
+    "discord.js": "^14.14.1",
+    "dlist.js": "^0.5.0",
+    "ffmpeg-static": "^5.2.0",
+    "get-audio-duration": "^4.0.1",
+    "libsodium-wrappers": "^0.7.13",
+    "mongoose": "^8.1.1"
+  },
+  "devDependencies": {
+    "@types/node": "^18.19.14",
+    "@typescript-eslint/eslint-plugin": "^5.62.0",
+    "@typescript-eslint/parser": "^5.62.0",
+    "eslint": "^8.56.0",
+    "typescript": "^5.3.3"
+  }
 	"name": "discord-tts",
 	"version": "2.0.0",
 	"main": "dist/sharding.js",

@@ -48,8 +48,8 @@ export default {
 
         await interaction.deferReply({ ephemeral: !interaction.guild?.members.me?.permissionsIn(interaction.channelId).has(['ViewChannel', 'SendMessages', 'AttachFiles']) || visibility === 'hidden' });
 
-        const textInput = (interaction.options as CommandInteractionOptionResolver).getString('text') || 'No text provided';
-        const speaker = (interaction.options as CommandInteractionOptionResolver).getString('speaker') || 'en_us_002';
+        const textInput = (interaction.options as CommandInteractionOptionResolver).getString('text', true);
+        const speaker = (interaction.options as CommandInteractionOptionResolver).getString('speaker');
 
         const user = await users.findOne({ user: interaction.user.id });
         if (!await validate(interaction, user as User)) return;

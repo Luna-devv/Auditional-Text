@@ -1,4 +1,4 @@
-import { APIApplicationCommandOption, Collection, CommandInteraction } from 'discord.js';
+import { APIApplicationCommandOption, Collection, CommandInteraction, MessageContextMenuCommandInteraction } from 'discord.js';
 
 export type Command = {
     name: string;
@@ -8,6 +8,11 @@ export type Command = {
 
     run: (interaction: CommandInteraction) => void;
 };
+
+export type ContextCommand = {
+    name: string;
+    run: (interaction: MessageContextMenuCommandInteraction) => void;
+}
 
 export type Event = {
     name: string;
@@ -19,10 +24,10 @@ export type Event = {
 export type ConfigType = {
     token: string;
     mongo: string;
-    dlist: string;
+    dlist?: string;
 
     ad: string;
-    guildLogging: string;
+    guildLogging?: string;
 
     apis: {
         tts: string;
@@ -40,10 +45,10 @@ export type ConfigType = {
     shards: number | 'auto';
 
     data: {
-        commands: Collection<string, Command>;
         events: Collection<string, Event>;
         interactions: {
             commands: Collection<string, Command>;
+            context: Collection<string, Command>;
         }
     }
 

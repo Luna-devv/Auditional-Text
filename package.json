@@ -1,22 +1,25 @@
 {
-  "name": "discord-tts",
-  "version": "2.0.0",
-  "main": "dist/sharding.js",
-  "license": "MIT",
-  "dependencies": {
-    "@discordjs/voice": "^0.15.0",
-    "discord.js": "^14.8.0",
-    "dlist.js": "^0.4.2",
-    "ffmpeg-static": "^5.1.0",
-    "get-audio-duration": "^3.1.1",
-    "libsodium-wrappers": "^0.7.11",
-    "mongoose": "^7.0.2"
-  },
-  "devDependencies": {
-    "@types/node": "^18.15.5",
-    "@typescript-eslint/eslint-plugin": "^5.56.0",
-    "@typescript-eslint/parser": "^5.56.0",
-    "eslint": "^8.36.0",
-    "typescript": "^5.0.2"
-  }
+	"name": "discord-tts",
+	"version": "2.0.0",
+	"main": "dist/sharding.js",
+	"license": "MIT",
+	"dependencies": {
+		"@discordjs/voice": "^0.15.0",
+		"discord.js": "^14.8.0",
+		"dlist.js": "^0.4.2",
+		"ffmpeg-static": "^5.1.0",
+		"get-audio-duration": "^3.1.1",
+		"libsodium-wrappers": "^0.7.11",
+		"lodash": "^4.17.21",
+		"mongoose": "^7.0.2",
+		"node-web-audio-api": "^0.16.0"
+	},
+	"devDependencies": {
+		"@types/lodash": "^4.14.202",
+		"@types/node": "^18.15.5",
+		"@typescript-eslint/eslint-plugin": "^5.56.0",
+		"@typescript-eslint/parser": "^5.56.0",
+		"eslint": "^8.36.0",
+		"typescript": "^5.0.2"
+	}
 }

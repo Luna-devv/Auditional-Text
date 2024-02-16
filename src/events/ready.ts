@@ -6,6 +6,7 @@ import { Config } from '../config';
 export default {
     name: 'ready',
     once: true,
+
     run: async (client: Client) => {
         const Interactions: ApplicationCommandDataResolvable[] = [];
 
@@ -13,25 +14,28 @@ export default {
             status: 'online',
             activities: [
                 {
-                    type: 1,
-                    name: `#${client.shard?.ids[0]} • www.waya.one`,
-                    url: 'https://www.youtube.com/watch?v=lwMmGjgT_e0'
+                    type: 4,
+                    name: '<a:emoji_174:948133729535135744>',
+                    state: `#${client.shard?.ids[0]} • wamellow.com`,
                 }
             ]
         });
 
-        Config.data.interactions.commands.forEach((command) => {
-            Interactions.push({
+        Interactions.push(
+            ...Config.data.interactions.commands.map((command) => ({
                 name: command.name,
                 description: command.description,
                 options: command.options,
-                dm_permission: command.dm_permission,
-            });
-        });
+            })),
+            ...Config.data.interactions.context.map((command) => ({
+                name: command.name,
+                type: 3,
+            }))
+        );
 
         client.application?.commands.set(Interactions);
 
-        if (process.platform === 'win32' || client.shard?.ids[0] !== 0) return;
+        if (process.platform === 'win32' || client.shard?.ids[0] !== 0 || !Config.dlist) return;
 
         const dlist = new Dlist({
             token: Config.dlist,

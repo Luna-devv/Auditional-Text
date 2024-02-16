@@ -5,10 +5,10 @@ import { ConfigType } from './typings';
 export const Config: ConfigType = {
     token: '',
     mongo: '',
-    dlist: '',
+    dlist: '', // token for dlist.gg
 
-    ad: '',
-    guildLogging: '',
+    ad: '', // custom ad message
+    guildLogging: '', // guild logging channel
 
     apis: {
         tts: '',
@@ -26,12 +26,14 @@ export const Config: ConfigType = {
     shards: 'auto',
 
     data: {
-        commands: new Collection(),
         events: new Collection(),
         interactions: {
-            commands: new Collection()
+            commands: new Collection(),
+            context: new Collection()
         }
     },
+
+    // if you use any other bot listing site, add it here
     listings: [
         {
             active: true,

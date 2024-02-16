@@ -126,5 +126,8 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
-config.ts 
 yarn.lock
+pnpm-lock.yaml
+package-lock.json
+
+config.ts

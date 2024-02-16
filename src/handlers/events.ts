@@ -1,6 +1,5 @@
 import { readdirSync } from 'node:fs';
 import { Client } from 'discord.js';
-import path from 'node:path';
 
 import { Event } from '../typings';
 

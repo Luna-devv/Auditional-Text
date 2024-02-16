@@ -8,6 +8,7 @@ export async function getData(text: string, voice: string): Promise<string | nul
     const name = path.join(__dirname, '..', 'audio', fileName + '.mp3');
 
     if (!fs.existsSync(path.join(__dirname, '..', 'audio'))) fs.mkdirSync(path.join(__dirname, '..', 'audio'));
+    if (Config.apis.tts.endsWith('/')) Config.apis.tts = Config.apis.tts.slice(0, -1);
 
     const data = await fetch(Config.apis.tts + '/api/generation', {
         method: 'POST',
@@ -18,7 +19,15 @@ export async function getData(text: string, voice: string): Promise<string | nul
             'text': text,
             'voice': voice
         })
-    }).then(async (res) => await res.json()).catch(console.error);
+    }).then((r) => {
+        if (!r.ok) throw new Error(`Error fetching. Status: ${r.status}, Res: ${r.statusText}.`);
+        return r;
+    }).then(async (res) => await res.json()).catch((err) => {
+        console.error(`Error fetching. Text: ${text}, Voice: ${voice}.\n`, err);
+        return null;
+    });
+
+    if (!data?.data) return null;
 
     try {
         fs.writeFileSync(name, Buffer.from(data?.data?.replace?.('data:audio/mp3; codecs=opus;base64,', ''), 'base64'));

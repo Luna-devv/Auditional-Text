@@ -26,7 +26,7 @@ export default {
         });
 
         await interaction.editReply({
-            content: `${Emote.success} Here's your audio file!\n${Config.ad}`,
+            content: Config.ad,
             files: [{
                 attachment: res,
                 name: new Date().toISOString().replace('T', ' ').replace('Z', '') + '.mp3'

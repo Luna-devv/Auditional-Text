@@ -38,11 +38,6 @@ export default {
             bot: client.user?.id || '',
         });
 
-        const guildCount = (await client.shard?.fetchClientValues('guilds.cache.size') as unknown as number[]).reduce((prev: number, val: number) => prev + val, 0);
-
-        dlist.postGuilds(guildCount);
-        postStats(client, guildCount);
-
         setInterval(async () => {
             const guildCount = (await client.shard?.fetchClientValues('guilds.cache.size') as unknown as number[]).reduce((prev: number, val: number) => prev + val, 0);
             dlist.postGuilds(guildCount);

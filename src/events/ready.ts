@@ -6,6 +6,7 @@ import { Config } from '../config';
 export default {
     name: 'ready',
     once: true,
+
     run: async (client: Client) => {
         const Interactions: ApplicationCommandDataResolvable[] = [];
 
@@ -20,18 +21,21 @@ export default {
             ]
         });
 
-        Config.data.interactions.commands.forEach((command) => {
-            Interactions.push({
+        Interactions.push(
+            ...Config.data.interactions.commands.map((command) => ({
                 name: command.name,
                 description: command.description,
                 options: command.options,
-                dm_permission: command.dm_permission,
-            });
-        });
+            })),
+            ...Config.data.interactions.context.map((command) => ({
+                name: command.name,
+                type: 3,
+            }))
+        );
 
         client.application?.commands.set(Interactions);
 
-        if (process.platform === 'win32' || client.shard?.ids[0] !== 0) return;
+        if (process.platform === 'win32' || client.shard?.ids[0] !== 0 || !Config.dlist) return;
 
         const dlist = new Dlist({
             token: Config.dlist,

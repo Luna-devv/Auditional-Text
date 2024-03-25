@@ -1,8 +1,8 @@
 import { CommandInteractionOptionResolver } from 'discord.js';
+
+import { guilds } from '../../structures/guilds';
 import { Config, Emote } from '../../config';
 import { Command } from '../../typings';
-import { guilds } from '../../structures/guilds';
-
 
 export default {
     name: 'guild',

@@ -2,7 +2,6 @@ import { connections, disconnect, isPlaying } from '../../app';
 import { Config, Emote } from '../../config';
 import { Command } from '../../typings';
 
-
 export default {
     name: 'stop',
     description: 'Stop voice chat playing or just get it unstuck.',

@@ -3,9 +3,10 @@ import { Config } from '../config';
 
 export default {
     name: 'guildCreate',
+
     run: async (guild: Guild) => {
 
-        fetch(`https://discord.com/api/channels/${Config.guildLogging}/messages`, {
+        if (Config.guildLogging) fetch(`https://discord.com/api/channels/${Config.guildLogging}/messages`, {
             method: 'POST',
             headers: {
                 Authorization: `Bot ${guild.client.token}`,

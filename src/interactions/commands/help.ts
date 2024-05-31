@@ -10,11 +10,11 @@ export default {
         interaction.reply({
             embeds: [
                 {
-                    description: `With **${interaction.client.user?.username}** you're able to either **convert text to .mp3 files** for you to download (</mp3:1004817057768034314>), or to **speak messages in voice channels** using </voice:1004817057768034315>. Note that there is a character limit of 300.\n\n[[Watch a YouTube Video about Chat to Speech](https://www.youtube.com/watch?v=NS5fZ1ltovE)]\n\n**Developers**\n[\`@mwlica\`](https://lunish.nl?utm_source=Auditional+Text&utm_content=help+command) - Voice Conversion, Bot\n[\`@digital39999\`](https://crni.xyz/?utm_source=Auditional+Text&utm_content=help+command) - Scalability`,
+                    description: `With **${interaction.client.user?.username}** you're able to either **convert text to .mp3 files** for you to download (</mp3:1004817057768034314>), or to **speak messages in voice channels** using </voice:1004817057768034315>. Note that there is a character limit of 300.\n\n[[Watch a YouTube Video about Chat to Speech](https://www.youtube.com/watch?v=NS5fZ1ltovE)]\n\n**Developers**\n[\`@mwlica\`](https://lunish.nl?utm_source=Auditional+Text&utm_medium=help) - Voice Conversion, Bot\n[\`@digital39999\`](https://crni.xyz/?utm_source=Auditional+Text&utm_medium=help) - Scalability`,
                     thumbnail: {
                         url: `https://cdn.discordapp.com/avatars/${interaction.client.user?.id}/${interaction.client.user?.avatar}.${interaction.client.user?.avatar?.startsWith('a_') ? 'gif' : 'png'}?size=1024`
                     },
-                    color: 0xe79da2
+                    color: 0x01af8d
                 }
             ],
             components: [
@@ -25,7 +25,7 @@ export default {
                             type: ComponentType.Button,
                             style: ButtonStyle.Link,
                             label: 'About Wamellow',
-                            url: 'https://wamellow.com?utm_source=Audtional+Text&utm_content=help+command',
+                            url: 'https://wamellow.com?utm_source=Audtional+Text&utm_medium=help',
                             emoji: '<:c_prideblob:932368100832202783>'
                         },
                         {
@@ -45,7 +45,7 @@ export default {
                     ]
                 },
                 {
-                    type: 1,
+                    type: ComponentType.ActionRow,
                     components: [
                         {
                             type: ComponentType.Button,

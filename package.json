@@ -9,18 +9,18 @@
   },
   "dependencies": {
     "@discordjs/voice": "^0.16.1",
-    "discord.js": "^14.14.1",
+    "discord.js": "^14.15.2",
     "dlist.js": "^0.5.0",
     "ffmpeg-static": "^5.2.0",
     "get-audio-duration": "^4.0.1",
     "libsodium-wrappers": "^0.7.13",
-    "mongoose": "^8.2.1"
+    "mongoose": "^8.4.0"
   },
   "devDependencies": {
-    "@types/node": "^18.19.24",
+    "@types/node": "^18.19.33",
     "@typescript-eslint/eslint-plugin": "^5.62.0",
     "@typescript-eslint/parser": "^5.62.0",
     "eslint": "^8.57.0",
-    "typescript": "^5.4.2"
+    "typescript": "^5.4.5"
   }
 }

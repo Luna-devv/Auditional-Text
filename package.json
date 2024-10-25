@@ -8,13 +8,13 @@
     "build": "npx tsc"
   },
   "dependencies": {
-    "@discordjs/voice": "^0.16.1",
-    "discord.js": "^14.15.2",
+    "@discordjs/voice": "^0.17.0",
+    "discord.js": "^14.16.3",
     "dlist.js": "^0.5.0",
     "ffmpeg-static": "^5.2.0",
     "get-audio-duration": "^4.0.1",
-    "libsodium-wrappers": "^0.7.13",
-    "mongoose": "^8.4.0"
+    "libsodium-wrappers": "^0.7.15",
+    "mongoose": "^8.7.3"
   },
   "devDependencies": {
     "@types/node": "^18.19.33",

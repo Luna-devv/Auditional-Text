@@ -101,7 +101,8 @@ export default {
         const duration: number = await getAudioDurationInSeconds(res);
 
         const connection = joinVoiceChannel({
-            adapterCreator: interaction.guild?.voiceAdapterCreator,
+            // @ts-ignore wha
+            adapterCreator: interaction.guild.voiceAdapterCreator,
             channelId: member?.voice.channelId || '',
             guildId: interaction.guildId || '',
         });

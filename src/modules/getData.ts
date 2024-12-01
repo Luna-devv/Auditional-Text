@@ -16,15 +16,14 @@ export async function getData(text: string, voice: string): Promise<string | nul
             'text': text,
             'voice': voice
         })
-    }).then(async (res) => await res.json()).catch(console.error);
+    })
+        .then(async (res) => await res.json())
+        .catch(() => null);
 
-    try {
-        writeFile(name, Buffer.from(data.data, 'base64'));
-        return name;
-    } catch (e) {
-        console.error(e);
-        return null;
-    }
+    if (!data) return null;
+
+    writeFile(name, Buffer.from(data.data, 'base64'));
+    return name;
 }
 
 function randomCode(length: number): string {

@@ -1,26 +1,25 @@
-import { join } from 'node:path';
 import { writeFile } from 'node:fs/promises';
-
+import { join } from 'node:path';
 import { Config } from '../config';
 
-export async function getData(text: string, voice: string): Promise<string | null> {
-    const fileName = randomCode(10);
-    const name = join(process.cwd(), 'cache', fileName + '.mp3');
-
+export async function getData(text: string, speaker: string) {
     const data = await fetch(Config.apis.tts, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-            'text': text,
-            'voice': voice
+            text,
+            speaker
         })
     })
         .then(async (res) => await res.json())
         .catch(() => null);
 
     if (!data) return null;
+
+    const fileName = randomCode(10);
+    const name = join(process.cwd(), 'cache', fileName + '.mp3');
 
     writeFile(name, Buffer.from(data.data, 'base64'));
     return name;

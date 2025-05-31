@@ -21,7 +21,7 @@ export async function getData(text: string, speaker: string) {
     const fileName = randomCode(10);
     const name = join(process.cwd(), 'cache', fileName + '.mp3');
 
-    writeFile(name, Buffer.from(data.data, 'base64'));
+    await writeFile(name, Buffer.from(data.v_str, 'base64'));
     return name;
 }
 

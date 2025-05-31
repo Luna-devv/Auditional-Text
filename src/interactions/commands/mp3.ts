@@ -1,12 +1,12 @@
 import { CommandInteractionOptionResolver } from 'discord.js';
 import fs from 'node:fs';
 
+import { speakers } from '../../app';
+import { Config, Emote } from '../../config';
+import { getData } from '../../modules/getData';
 import { validate } from '../../modules/voteValidation';
 import { User, users } from '../../structures/user';
-import { getData } from '../../modules/getData';
-import { Config, Emote } from '../../config';
 import { Command } from '../../typings';
-import { speakers } from '../../app';
 
 export default {
     name: 'mp3',

@@ -9,7 +9,7 @@ process.env.NODE_NO_WARNINGS = '1';
 try {
     const manager = new ShardingManager(`${process.cwd()}/dist/app.js`, {
         token: Config.token,
-        totalShards: Config.shards,
+        totalShards: Config.shards
     });
 
     manager.on('shardCreate', (shard) => {

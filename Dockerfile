@@ -1,14 +1,15 @@
-FROM node:current-alpine
+FROM oven/bun:slim
 
-WORKDIR /usr/src/app
+WORKDIR /app
 
-COPY package*.json ./
+COPY package.json .
+COPY bun.lock .
 
-RUN npm install
-RUN npm install -g tsc
+RUN bun install --frozen-lockfile
+RUN bun install -g tsc
 
 COPY . .
 
-RUN npm run build || exit 0;
+RUN bun run build;
 
-CMD ["npm", "start"]
+CMD ["bun", "start"]

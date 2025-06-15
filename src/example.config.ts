@@ -3,19 +3,25 @@ import { Collection } from 'discord.js';
 import { ConfigType } from './typings';
 
 export const Config: ConfigType = {
-    token: '',
-    mongo: '',
-    dlist: '',
+    token: 'abc',
+    dlist: 'abc',
 
-    ad: '',
-    guildLogging: '',
+    ad: 'Invite me now!',
+    guildLogging: '123',
+
+    postgres: {
+        host: 'localhost',
+        user: 'tts',
+        password: 'abc',
+        database: 'tts'
+    },
 
     apis: {
-        tts: '',
+        tts: 'http://localhost:3000/invoke',
 
         // can be removed if not needed
-        votes: '',
-        votes_authorization: ''
+        votes: 'http://localhost:3000/votes',
+        votes_authorization: 'abc'
     },
 
     // if you dont know what this does, leave it
@@ -23,10 +29,7 @@ export const Config: ConfigType = {
         enabled: false,
     },
 
-    shards: 'auto',
-
     data: {
-        commands: new Collection(),
         events: new Collection(),
         interactions: {
             commands: new Collection()
@@ -36,12 +39,12 @@ export const Config: ConfigType = {
         {
             active: true,
             url: 'https://top.gg/api/bots/985213199248924722/stats',
-            authorization: '',
+            authorization: 'abc',
             method: 'POST',
             structure: { guilds: 'server_count', shards: 'shard_count' }
         }
     ]
-};
+} ;
 
 export const Emote = {
     error: '> <:dnd_status:949003440091201587>',

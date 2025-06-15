@@ -1,4 +1,4 @@
-import { Guild, TextChannel } from 'discord.js';
+import { ButtonStyle, ComponentType, Guild, TextChannel } from 'discord.js';
 import { Config } from '../config';
 
 export default {
@@ -28,33 +28,43 @@ export default {
         )
             channel = guild.publicUpdatesChannel;
 
-        if (channel)
-            channel.send({
-                embeds: [
-                    {
-                        title: 'Thanks for adding me to your server!',
-                        description: 'To start using me, run either `/mp3` or `/voice`.\nIf you need help, join [our Support Server](https://discord.gg/w4QY2mhe3x) and ask us in #getting-help.',
-                        color: 0x03e6b1,
-                        image: {
-                            url: 'https://cdn.waya.one/r/tts.png',
-                        },
-                    },
-                ],
-                components: [
-                    {
-                        type: 1,
-                        components: [
-                            {
-                                type: 2,
-                                label: 'Add Waya - Best multipurpose bot!',
-                                style: 5,
-                                url: 'https://discord.com/oauth2/authorize?client_id=857230367350063104&permissions=1376470297718&scope=bot+applications.commands',
-                                emoji: '<a:nyaYay:978360208151687259>',
-                            }
-                        ]
-                    }
-                ]
-            });
+        if (!channel) return;
 
+        channel.send({
+            embeds: [
+                {
+                    description: `## How do I use ${guild.client.user.username}?\nTo use Text-to-Speech, either run </mp3:1004817057768034314> or </voice:1004817057768034315> anywhere.\n\nIf you need help, join [our Support Server](https://discord.gg/w4QY2mhe3x) and ask us in [#・support-n-help](https://discord.com/channels/828676951023550495/1053269191588847617).`,
+                    color: 0x03e6b1
+                },
+            ],
+            components: [
+                {
+                    type: ComponentType.ActionRow,
+                    components: [
+                        {
+                            type: ComponentType.Button,
+                            style: ButtonStyle.Link,
+                            label: 'Join Support',
+                            url: 'https://discord.gg/w4QY2mhe3x',
+                            emoji: {
+                                name: 'discord',
+                                id: '1256328678497845390'
+                            }
+                        },
+                        {
+                            type: ComponentType.Button,
+                            style: ButtonStyle.Link,
+                            label: 'Invite Wamellow',
+                            url: 'https://discord.com/oauth2/authorize?client_id=1125449347451068437&redirect_uri=https%3A%2F%2Fwamellow.com%2Flogin&permissions=1409558244470&prompt=none&response_type=code&state=%252F&scope=identify+guilds+bot',
+                            emoji: {
+                                animated: true,
+                                name: 'c_prideblob',
+                                id: '932368100832202783'
+                            }
+                        }
+                    ]
+                }
+            ]
+        });
     }
 };

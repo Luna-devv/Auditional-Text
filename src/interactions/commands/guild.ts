@@ -1,8 +1,7 @@
-import { CommandInteractionOptionResolver } from 'discord.js';
+import { ApplicationCommandOptionType, CommandInteractionOptionResolver } from 'discord.js';
 import { Config, Emote } from '../../config';
+import { db } from '../../db';
 import { Command } from '../../typings';
-import { guilds } from '../../structures/guilds';
-
 
 export default {
     name: 'guild',
@@ -11,12 +10,12 @@ export default {
         {
             name: 'voice_timeout',
             description: 'How long the bot continues to stay inside your voice channel after /voice.',
-            type: 1,
+            type: ApplicationCommandOptionType.Subcommand,
             options: [
                 {
                     name: 'time',
                     description: 'Seconds',
-                    type: 4,
+                    type: ApplicationCommandOptionType.Integer,
                     required: true,
                 },
             ]
@@ -25,27 +24,46 @@ export default {
     dm_permission: false,
 
     run: async (interaction) => {
-        await interaction.deferReply({ ephemeral: true }).catch(() => null);
+        await interaction.deferReply({ ephemeral: true });
 
-        if (!interaction.memberPermissions?.has('ManageGuild')) return interaction.editReply({
-            content: `${Emote.error} You are missing \`ManageGuild\` permissions.\n${Config.ad}`
-        });
+        if (!interaction.guildId || !interaction.memberPermissions?.has('ManageGuild')){
+            void interaction.editReply({
+                content: `${Emote.error} You are missing \`ManageGuild\` permissions.\n${Config.ad}`
+            });
 
-        let guild = await guilds.findOne({ guild: interaction.guildId });
-        if (!guild) guild = await guilds.create({ guild: interaction.guildId });
+            return;
+        }
 
         const command = (interaction.options as CommandInteractionOptionResolver).getSubcommand(false);
+
         switch (command) {
             case 'voice_timeout': {
-                guild.voiceTimeout = (interaction.options as CommandInteractionOptionResolver).getInteger('time') ?? 30;
+                const timeout = (interaction.options as CommandInteractionOptionResolver).getInteger('time') ?? 30;
 
-                if (guild.voiceTimeout > 1000 * 60 * 8) return interaction.editReply({
-                    content: `${Emote.error} Timeout cannot be above **8 minutes**, contact support.\n${Config.ad}`,
-                });
+                if (timeout > 1000 * 60 * 8) {
+                    void interaction.editReply({
+                        content: `${Emote.error} Timeout cannot be above **8 minutes**, contact support.\n${Config.ad}`,
+                    });
 
-                await guild.save();
+                    return;
+                }
+
+                const guild = await db
+                    .insertInto('guilds')
+                    .values({
+                        id: interaction.guildId,
+                        timeout
+                    })
+                    .onConflict((conflict) => (
+                        conflict
+                            .column('id')
+                            .doUpdateSet({ timeout })
+                    ))
+                    .returning('timeout')
+                    .executeTakeFirstOrThrow();
+
                 interaction.editReply({
-                    content: `${Emote.success} Successfully set timeout to **${guild.voiceTimeout} seconds**.\n${Config.ad}`,
+                    content: `${Emote.success} Successfully set timeout to **${guild.timeout} seconds**.\n${Config.ad}`,
                 });
 
                 break;

@@ -1,19 +1,19 @@
-import { CommandInteractionOptionResolver } from 'discord.js';
+import { ApplicationCommandOptionType, CommandInteractionOptionResolver } from 'discord.js';
 
-import { users } from '../../structures/user';
 import { Config, Emote } from '../../config';
+import { db } from '../../db';
 import { Command } from '../../typings';
-import { speakers } from '../../app';
+import voices from '../../voices.json';
 
 export default {
     name: 'defaultvoice',
     description: 'What should be the default speaker used for you?',
     options: [
         {
-            name: 'speaker',
+            name: 'voice',
             description: 'What voice should be used?',
-            type: 3,
-            choices: speakers,
+            type: ApplicationCommandOptionType.String,
+            choices: voices,
             required: true
         }
     ],
@@ -22,14 +22,26 @@ export default {
     run: async (interaction) => {
         await interaction.deferReply({ ephemeral: true });
 
-        let user = await users.findOne({ user: interaction.user.id });
-        if (!user) user = await users.create({ user: interaction.user.id });
+        const voice = (interaction.options as CommandInteractionOptionResolver).getString('voice') || 'en_us_002';
 
-        user.voice = (interaction.options as CommandInteractionOptionResolver).getString('speaker') || 'en_us_002';
-        await user.save();
+        const user = await db
+            .insertInto('users')
+            .values({
+                id: interaction.user.id,
+                default_voice: voice
+            })
+            .onConflict((conflict) => (
+                conflict
+                    .column('id')
+                    .doUpdateSet({
+                        default_voice: voice
+                    })
+            ))
+            .returning('default_voice')
+            .executeTakeFirstOrThrow();
 
-        interaction.editReply({
-            content: `${Emote.success} Your default voice has been set to \`${user.voice}\`!\n${Config.ad}`,
+        void interaction.editReply({
+            content: `${Emote.success} Your default voice has been set to \`${user.default_voice}\`!\n${Config.ad}`,
         });
     }
 } as Command;

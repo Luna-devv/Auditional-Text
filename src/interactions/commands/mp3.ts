@@ -1,12 +1,12 @@
-import { CommandInteractionOptionResolver } from 'discord.js';
+import { ApplicationCommandOptionType, CommandInteractionOptionResolver } from 'discord.js';
 import fs from 'node:fs';
 
-import { speakers } from '../../app';
 import { Config, Emote } from '../../config';
-import { getData } from '../../modules/getData';
-import { validate } from '../../modules/voteValidation';
-import { User, users } from '../../structures/user';
+import { db } from '../../db';
 import { Command } from '../../typings';
+import { getData } from '../../utils/tts';
+import { validate } from '../../utils/validate-vote';
+import voices from '../../voices.json';
 
 export default {
     name: 'mp3',
@@ -15,14 +15,14 @@ export default {
         {
             name: 'text',
             description: 'What text should get transformed?',
-            type: 3,
+            type: ApplicationCommandOptionType.String,
             maxLength: 300,
             required: true
         },
         {
             name: 'visibility',
             description: 'Should others be able to see what you do?',
-            type: 3,
+            type: ApplicationCommandOptionType.String,
             choices: [
                 {
                     name: 'public',
@@ -35,10 +35,10 @@ export default {
             ],
         },
         {
-            name: 'speaker',
+            name: 'voice',
             description: 'What voice should be used?',
-            type: 3,
-            choices: speakers
+            type: ApplicationCommandOptionType.String,
+            choices: voices
         }
     ],
     dm_permission: true,
@@ -48,16 +48,25 @@ export default {
 
         await interaction.deferReply({ ephemeral: !interaction.guild?.members.me?.permissionsIn(interaction.channelId).has(['ViewChannel', 'SendMessages', 'AttachFiles']) || visibility === 'hidden' });
 
-        const textInput = (interaction.options as CommandInteractionOptionResolver).getString('text') || 'No text provided';
-        const speaker = (interaction.options as CommandInteractionOptionResolver).getString('speaker') || 'en_us_002';
+        const textInput = (interaction.options as CommandInteractionOptionResolver).getString('text', true);
+        const voice = (interaction.options as CommandInteractionOptionResolver).getString('voice');
 
-        const user = await users.findOne({ user: interaction.user.id });
-        if (!await validate(interaction, user as User)) return;
+        const user = await db
+            .selectFrom('users')
+            .select(['command_uses', 'verification_valid_until', 'default_voice'])
+            .where('id', '=', interaction.user.id)
+            .executeTakeFirst();
 
-        const res = await getData(textInput, speaker || user?.voice || 'en_us_002');
-        if (!res) return interaction.editReply({
-            content: `${Emote.error} Something went wrong playing this file. This often happens because of a language-input missmatch!\n${Config.ad}`
-        });
+        if (!await validate(interaction, user)) return;
+
+        const res = await getData(textInput, voice || user?.default_voice || 'en_us_002');
+        if (!res) {
+            void interaction.editReply({
+                content: `${Emote.error} Something went wrong playing this file. This often happens because of a language-input missmatch!\n${Config.ad}`
+            });
+
+            return;
+        }
 
         await interaction.editReply({
             content: Config.ad,

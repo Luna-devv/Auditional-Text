@@ -1,26 +1,34 @@
-import { ShardingManager } from 'discord.js';
-import { Config } from './config';
+import { join } from 'path';
+import { ClusterManager } from 'status-sharding';
 
-console.clear();
-console.log(`\x1b[36mStarting ${Config.shards} shards.\n\x1b[0m`);
+if (!('bun' in process.versions)) throw new Error('Please use bun.');
 
-process.env.NODE_NO_WARNINGS = '1';
+const ext = __filename.split('.').pop();
+if (ext === 'ts') throw new Error('Please use `bun run build` && `bun run start`!');
 
-try {
-    const manager = new ShardingManager(`${process.cwd()}/dist/app.js`, {
-        token: Config.token,
-        totalShards: Config.shards
+const manager = new ClusterManager(join(__dirname, 'app.' + ext), {
+    mode: 'process',
+    token: process.env.TOKEN,
+    shardsPerClusters: 4,
+    respawn: true,
+    heartbeat: {
+        enabled: true,
+        maxMissedHeartbeats: 2,
+        interval: 1_000 * 10,
+        timeout: 1_000 * 12
+    },
+    spawnOptions: {
+        delay: 6_000
+    }
+});
+
+process.on('uncaughtException', console.log);
+process.on('unhandledRejection', console.log);
+
+manager.on('clusterCreate', (cluster) => {
+    cluster.on('death', (shard) => {
+        console.log('ctr', `Cluster #${shard.id} died`, 'red');
     });
+});
 
-    manager.on('shardCreate', (shard) => {
-        console.log(`\x1b[35m\x1b[1mConnecting shard #${shard.id}.\x1b[0m`);
-
-        shard.on('ready', () => {
-            console.log(`\x1b[35m\x1b[1mShard #${shard.id} is connected.\x1b[0m`);
-        });
-    });
-
-    manager.spawn();
-} catch (e) {
-    console.log(e);
-}
+void manager.spawn();

@@ -1,40 +1,39 @@
-import { joinVoiceChannel, createAudioPlayer, createAudioResource } from '@discordjs/voice';
-import { ButtonStyle, CommandInteractionOptionResolver, ComponentType } from 'discord.js';
-// @ts-ignore no types for package :(
+import { createAudioPlayer, createAudioResource, joinVoiceChannel } from '@discordjs/voice';
+import { ApplicationCommandOptionType, ButtonStyle, CommandInteractionOptionResolver, ComponentType } from 'discord.js';
 import getAudioDurationInSeconds from 'get-audio-duration';
 import fs from 'node:fs';
 
-import { connections, isPlaying, disconnect, speakers } from '../../app';
-import { validate } from '../../modules/voteValidation';
-import { User, users } from '../../structures/user';
-import { getData } from '../../modules/getData';
+import { connections, disconnect, isPlaying } from '../../app';
 import { Config, Emote } from '../../config';
+import { db } from '../../db';
 import { Command } from '../../typings';
-import { guilds } from '../../structures/guilds';
+import { getData } from '../../utils/tts';
+import { validate } from '../../utils/validate-vote';
+import voices from '../../voices.json';
 
 export default {
     name: 'voice',
-    description: 'Want to speak as me in a voicechannel?',
+    description: 'Want to speak as me in a voice channel?',
     options: [
         {
             name: 'text',
             description: 'What text should get transformed?',
-            type: 3,
+            type: ApplicationCommandOptionType.String,
             maxLength: 300,
             required: true
         },
         {
-            name: 'speaker',
+            name: 'voice',
             description: 'What voice should be used?',
-            type: 3,
-            choices: speakers
+            type: ApplicationCommandOptionType.String,
+            choices: voices
         }
     ],
     dm_permission: false,
 
     run: async (interaction) => {
-
         const member = await interaction.guild?.members.fetch(interaction.user.id).catch(() => null);
+
         if (!member?.voice.channelId){
             void interaction.reply({
                 content: `${Emote.error} You're not connected to any Voice Channels.\n${Config.ad}`,
@@ -46,7 +45,7 @@ export default {
 
         if (!interaction.guild?.members.me?.permissionsIn(member.voice.channelId).has(['ViewChannel', 'Connect', 'Speak'])){
             void interaction.reply({
-                content: `${Emote.error} I'm not able to **View**/**Connect** to/**Speak** in your Voice Channel.\n${Config.ad}`,
+                content: `${Emote.error} I'm not able to **View**/**Connect**/**Speak** in your Voice Channel.\n${Config.ad}`,
                 ephemeral: true
             });
 
@@ -64,7 +63,10 @@ export default {
                                 type: ComponentType.Button,
                                 style: ButtonStyle.Link,
                                 url: 'https://discord.com/oauth2/authorize?client_id=1125449347451068437&redirect_uri=https://wamellow.com/login&response_type=code&permissions=1426738113654&prompt=none&scope=identify+guilds+bot',
-                                emoji: '<:BlahajReach:1213502811870986321>',
+                                emoji: {
+                                    name: 'BlahajReach',
+                                    id: '1213502811870986321'
+                                },
                                 label: 'Get a 2nd Text to Speech bot for Voice Channels'
                             }
                         ]
@@ -77,18 +79,24 @@ export default {
         }
 
         if (!interaction.guild?.voiceAdapterCreator) return;
+
         await interaction.deferReply({
             ephemeral: !interaction.guild?.members.me?.permissionsIn(interaction.channelId).has(['ViewChannel', 'SendMessages'])
         })
             .catch(() => null);
 
-        const textInput: string = (interaction.options as CommandInteractionOptionResolver).getString('text') || '';
-        const speaker: string = (interaction.options as CommandInteractionOptionResolver).getString('speaker') || '';
+        const textInput = (interaction.options as CommandInteractionOptionResolver).getString('text', true);
+        const voice = (interaction.options as CommandInteractionOptionResolver).getString('voice');
 
-        const user = await users.findOne({ user: interaction.user.id });
-        if (!await validate(interaction, user as User)) return;
+        const user = await db
+            .selectFrom('users')
+            .select(['command_uses', 'verification_valid_until', 'default_voice'])
+            .where('id', '=', interaction.user.id)
+            .executeTakeFirst();
 
-        const res = await getData(textInput, speaker || user?.voice || 'en_us_002');
+        if (!await validate(interaction, user)) return;
+
+        const res = await getData(textInput, voice || user?.default_voice || 'en_us_002');
         if (!res) {
             void interaction.editReply({
                 content: `${Emote.error} Something went wrong playing this file. **This often happens because of a language-input missmatch!**\n${Config.ad}`
@@ -97,19 +105,17 @@ export default {
             return;
         }
 
-        const guild = await guilds.findOne({ guild: interaction.guildId });
-        const duration: number = await getAudioDurationInSeconds(res);
+        const duration = await getAudioDurationInSeconds(res);
 
         const connection = joinVoiceChannel({
-            // @ts-ignore wha
             adapterCreator: interaction.guild.voiceAdapterCreator,
-            channelId: member?.voice.channelId || '',
-            guildId: interaction.guildId || '',
+            channelId: member?.voice.channelId,
+            guildId: interaction.guildId!,
         });
 
-        connections.set(interaction.guildId || '', connection);
-        isPlaying.set(interaction.guildId || '', interaction.user.id);
-        disconnect.set(interaction.guildId || '', new Date().getTime());
+        connections.set(interaction.guildId! , connection);
+        isPlaying.set(interaction.guildId !, interaction.user.id);
+        disconnect.set(interaction.guildId !, new Date().getTime());
 
         const player = createAudioPlayer();
         const resource = createAudioResource(res);
@@ -119,20 +125,33 @@ export default {
 
         await interaction.editReply({ content: `${Emote.success} Now playing in <#${member?.voice.channelId}> for **${duration} seconds**.\n${Config.ad}` });
 
-        setTimeout(() => {
-            fs.unlink(res, () => null);
-            isPlaying.delete(interaction.guildId || '');
-        }, (duration * 1000) + 1000);
+        setTimeout(
+            () => {
+                fs.unlink(res, () => null);
+                isPlaying.delete(interaction.guildId!);
+            },
+            duration + 1000
+        );
 
-        setTimeout(() => {
-            if (((disconnect.get(interaction.guildId || '') ?? 0) + ((duration * 1000) + (guild?.voiceTimeout ?? 30) * 1000)) < new Date().getTime()) {
+        const guild = await db
+            .selectFrom('guilds')
+            .select(['timeout'])
+            .where('id', '=', interaction.user.id)
+            .executeTakeFirst();
+
+        const time = duration + (guild?.timeout ?? 30) * 1000;
+        setTimeout(
+            () => {
+                if (((disconnect.get(interaction.guildId!) ?? 0) + time) > new Date().getTime()) return;
+
                 try {
                     connection.disconnect();
-                    isPlaying.delete(interaction.guildId || '');
-                    connections.delete(interaction.guildId || '');
-                    disconnect.delete(interaction.guildId || '');
+                    isPlaying.delete(interaction.guildId !);
+                    connections.delete(interaction.guildId!);
+                    disconnect.delete(interaction.guildId !);
                 } catch (e) { console.log(e); }
-            }
-        }, (duration * 1000) + (guild?.voiceTimeout ?? 30) * 1000);
+            },
+            time
+        );
     }
 } as Command;

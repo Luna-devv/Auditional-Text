@@ -1,4 +1,5 @@
 import { APIApplicationCommandOption, Collection, CommandInteraction } from 'discord.js';
+import { PoolConfig } from 'pg';
 
 export type Command = {
     name: string;
@@ -18,11 +19,12 @@ export type Event = {
 
 export type ConfigType = {
     token: string;
-    mongo: string;
     dlist: string;
 
     ad: string;
     guildLogging: string;
+
+    postgres: PoolConfig;
 
     apis: {
         tts: string;
@@ -37,10 +39,7 @@ export type ConfigType = {
         freeUse: number;
     }
 
-    shards: number | 'auto';
-
     data: {
-        commands: Collection<string, Command>;
         events: Collection<string, Event>;
         interactions: {
             commands: Collection<string, Command>;

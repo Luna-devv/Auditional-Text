@@ -1,19 +1,22 @@
-import { ApplicationCommandDataResolvable, Client } from 'discord.js';
+import { ActivityType, ApplicationCommandDataResolvable } from 'discord.js';
 import { Client as Dlist } from 'dlist.js';
 
+import { ShardingClient } from 'status-sharding';
 import { Config } from '../config';
 
 export default {
     name: 'ready',
     once: true,
-    run: async (client: Client) => {
+    run: async (client: ShardingClient) => {
+        console.log(`Hello from ${client.cluster.id}`);
+
         const Interactions: ApplicationCommandDataResolvable[] = [];
 
         client.user?.setPresence({
             status: 'online',
             activities: [
                 {
-                    type: 4,
+                    type: ActivityType.Custom,
                     name: '<a:emoji_174:948133729535135744>',
                     state: `#${client.shard?.ids[0]} • wamellow.com`
                 }
@@ -31,22 +34,27 @@ export default {
 
         client.application?.commands.set(Interactions);
 
-        if (process.platform === 'win32' || client.shard?.ids[0] !== 0) return;
+        if (client.cluster.id !== 10) return;
 
         const dlist = new Dlist({
             token: Config.dlist,
             bot: client.user?.id || '',
         });
 
-        setInterval(async () => {
-            const guildCount = (await client.shard?.fetchClientValues('guilds.cache.size') as unknown as number[]).reduce((prev: number, val: number) => prev + val, 0);
-            dlist.postGuilds(guildCount);
-            postStats(client, guildCount);
-        }, 10 * 60 * 1000);
+        setInterval(
+            async () => {
+                const guildsArray = await client.cluster.broadcastEval((c) => c.guilds.cache.size) as number[];
+                const guilds = guildsArray.reduce((acc, guildCount) => acc + guildCount, 0);
+
+                void dlist.postGuilds(guilds);
+                void postStats(client, guilds);
+            },
+            10 * 60 * 1000
+        );
     }
 };
 
-function postStats(client: Client, guildCount: number) {
+function postStats(client: ShardingClient, guildCount: number) {
     Config.listings.forEach(async (listing) => {
         if (!listing.active) return;
 

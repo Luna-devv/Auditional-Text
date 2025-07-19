@@ -1,5 +1,5 @@
 import { createAudioPlayer, createAudioResource, joinVoiceChannel } from '@discordjs/voice';
-import { ApplicationCommandOptionType, ButtonStyle, CommandInteractionOptionResolver, ComponentType } from 'discord.js';
+import { ApplicationCommandOptionType, ButtonStyle, ComponentType } from 'discord.js';
 import getAudioDurationInSeconds from 'get-audio-duration';
 import fs from 'node:fs';
 
@@ -85,8 +85,8 @@ export default {
         })
             .catch(() => null);
 
-        const textInput = (interaction.options as CommandInteractionOptionResolver).getString('text', true);
-        const voice = (interaction.options as CommandInteractionOptionResolver).getString('voice');
+        const textInput = interaction.options.getString('text', true);
+        const voice = interaction.options.getString('voice');
 
         const user = await db
             .selectFrom('users')

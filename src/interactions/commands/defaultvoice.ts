@@ -1,4 +1,4 @@
-import { ApplicationCommandOptionType, CommandInteractionOptionResolver } from 'discord.js';
+import { ApplicationCommandOptionType } from 'discord.js';
 
 import { Config, Emote } from '../../config';
 import { db } from '../../db';
@@ -22,7 +22,7 @@ export default {
     run: async (interaction) => {
         await interaction.deferReply({ ephemeral: true });
 
-        const voice = (interaction.options as CommandInteractionOptionResolver).getString('voice') || 'en_us_002';
+        const voice = interaction.options.getString('voice') || 'en_us_002';
 
         const user = await db
             .insertInto('users')

@@ -1,4 +1,4 @@
-import { ApplicationCommandOptionType, CommandInteractionOptionResolver } from 'discord.js';
+import { ApplicationCommandOptionType } from 'discord.js';
 import { Config, Emote } from '../../config';
 import { db } from '../../db';
 import { Command } from '../../typings';
@@ -34,11 +34,11 @@ export default {
             return;
         }
 
-        const command = (interaction.options as CommandInteractionOptionResolver).getSubcommand(false);
+        const command = interaction.options.getSubcommand(false);
 
         switch (command) {
             case 'voice_timeout': {
-                const timeout = (interaction.options as CommandInteractionOptionResolver).getInteger('time') ?? 30;
+                const timeout = interaction.options.getInteger('time') ?? 30;
 
                 if (timeout > 1000 * 60 * 8) {
                     void interaction.editReply({

@@ -1,4 +1,4 @@
-import { ApplicationCommandOptionType, CommandInteractionOptionResolver } from 'discord.js';
+import { ApplicationCommandOptionType } from 'discord.js';
 import fs from 'node:fs';
 
 import { Config, Emote } from '../../config';
@@ -44,12 +44,12 @@ export default {
     dm_permission: true,
 
     run: async (interaction) => {
-        const visibility = (interaction.options as CommandInteractionOptionResolver).getString('visibility') || 'visible';
+        const visibility = interaction.options.getString('visibility') || 'visible';
 
         await interaction.deferReply({ ephemeral: !interaction.guild?.members.me?.permissionsIn(interaction.channelId).has(['ViewChannel', 'SendMessages', 'AttachFiles']) || visibility === 'hidden' });
 
-        const textInput = (interaction.options as CommandInteractionOptionResolver).getString('text', true);
-        const voice = (interaction.options as CommandInteractionOptionResolver).getString('voice');
+        const textInput = interaction.options.getString('text', true);
+        const voice = interaction.options.getString('voice');
 
         const user = await db
             .selectFrom('users')

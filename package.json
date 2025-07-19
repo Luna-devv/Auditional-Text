@@ -14,21 +14,21 @@
   "dependencies": {
     "@discordjs/voice": "^0.18.0",
     "@types/pg": "^8.15.4",
-    "discord.js": "14.19.3",
+    "discord.js": "14.21.0",
     "dlist.js": "^0.5.0",
     "ffmpeg-static": "^5.2.0",
     "get-audio-duration": "^4.0.1",
-    "kysely": "^0.28.2",
+    "kysely": "^0.28.3",
     "libsodium-wrappers": "^0.7.15",
-    "pg": "^8.16.0",
+    "pg": "^8.16.3",
     "status-sharding": "^1.8.15"
   },
   "devDependencies": {
-    "@types/bun": "^1.2.16",
-    "@types/node": "^24.0.0",
-    "@typescript-eslint/eslint-plugin": "^8.34.0",
-    "@typescript-eslint/parser": "^8.34.0",
-    "eslint": "^8.57.1",
+    "@types/bun": "^1.2.19",
+    "@types/node": "^24.0.15",
+    "@typescript-eslint/eslint-plugin": "^8.37.0",
+    "@typescript-eslint/parser": "^8.37.0",
+    "eslint": "9.31.0",
     "typescript": "^5.8.3"
   }
 }

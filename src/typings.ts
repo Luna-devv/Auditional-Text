@@ -1,4 +1,4 @@
-import { APIApplicationCommandOption, Collection, CommandInteraction } from 'discord.js';
+import { APIApplicationCommandOption, ChatInputCommandInteraction, Collection } from 'discord.js';
 import { PoolConfig } from 'pg';
 
 export type Command = {
@@ -7,7 +7,7 @@ export type Command = {
     options?: APIApplicationCommandOption[];
     dm_permission?: boolean;
 
-    run: (interaction: CommandInteraction) => Promise<void>;
+    run: (interaction: ChatInputCommandInteraction) => Promise<void>;
 };
 
 export type Event = {

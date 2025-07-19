@@ -136,7 +136,7 @@ export default {
         const guild = await db
             .selectFrom('guilds')
             .select(['timeout'])
-            .where('id', '=', interaction.user.id)
+            .where('id', '=', interaction.guildId)
             .executeTakeFirst();
 
         const time = duration + (guild?.timeout ?? 30) * 1000;

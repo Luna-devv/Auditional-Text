@@ -34,7 +34,7 @@ export default {
 
         client.application?.commands.set(Interactions);
 
-        if (client.cluster.id !== 10) return;
+        if (client.cluster.id !== 0) return;
 
         const dlist = new Dlist({
             token: Config.dlist,

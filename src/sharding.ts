@@ -1,5 +1,6 @@
 import { join } from 'path';
 import { ClusterManager } from 'status-sharding';
+import { Config } from './config';
 
 if (!('bun' in process.versions)) throw new Error('Please use bun.');
 
@@ -8,8 +9,8 @@ if (ext === 'ts') throw new Error('Please use `bun run build` && `bun run start`
 
 const manager = new ClusterManager(join(__dirname, 'app.' + ext), {
     mode: 'process',
-    token: process.env.TOKEN,
-    shardsPerClusters: 4,
+    token: Config.token,
+    shardsPerClusters: Config.dev ? 1 : 4,
     respawn: true,
     heartbeat: {
         enabled: true,

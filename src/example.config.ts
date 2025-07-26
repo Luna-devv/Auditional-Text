@@ -3,6 +3,7 @@ import { Collection } from 'discord.js';
 import { ConfigType } from './typings';
 
 export const Config: ConfigType = {
+    dev: false,
     token: 'abc',
     dlist: 'abc',
 

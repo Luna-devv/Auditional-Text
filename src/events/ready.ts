@@ -18,7 +18,7 @@ export default {
                 {
                     type: ActivityType.Custom,
                     name: '<a:emoji_174:948133729535135744>',
-                    state: `#${client.shard?.ids[0]} • wamellow.com`
+                    state: `#${client.cluster.id} • wamellow.com`
                 }
             ]
         });

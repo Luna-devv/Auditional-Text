@@ -18,6 +18,7 @@ export type Event = {
 }
 
 export type ConfigType = {
+    dev: boolean;
     token: string;
     dlist: string;
 

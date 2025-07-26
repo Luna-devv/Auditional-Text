@@ -37,6 +37,7 @@ export type ConfigType = {
     verification: { enabled: false; } | {
         enabled: true;
         url: string;
+        premiumUrl?: string;
         freeUse: number;
     }
 

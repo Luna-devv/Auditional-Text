@@ -1,4 +1,4 @@
-import { ButtonStyle, CommandInteraction, ComponentType } from 'discord.js';
+import { ButtonComponent, ButtonStyle, CommandInteraction, ComponentType, MessageFlags } from 'discord.js';
 
 import { Selectable } from 'kysely';
 import { Config, Emote } from '../config';
@@ -72,14 +72,21 @@ export async function validate(interaction: CommandInteraction, user?: Pick<Sele
 
     if (data.message < now || isNaN(data.message)) {
         interaction.editReply({
-            content: `${Config.ad}`,
-            embeds: [
-                {
-                    title: '<:dnd_status:949003440091201587> We\'re experiencing exceptionally high demand',
-                    description: `To verify that you are a real person (and to help us grow), we ask you to [vote for us on Top.gg](${Config.verification.url}). After that, you can use our features as many times as you want!\nWe thank you for your understanding! <a:doggolove:932368331179196446>`
-                }
-            ],
+            flags: MessageFlags.IsComponentsV2,
             components: [
+                {
+                    type: ComponentType.Container,
+                    components: [
+                        {
+                            type: ComponentType.TextDisplay,
+                            content: "# <:venniesad:1254760522474328064> We're experiencing high demand"
+                        },
+                        {
+                            type: ComponentType.TextDisplay,
+                            content: `>>> Uh Oh! Bots use ${interaction.user.username} too! [Please complete the verification process on Top.gg](${Config.verification.url}). After that, you can use Text-to-Speech as much as you want!\nWe thank you for your understanding! <a:doggolove:932368331179196446>`
+                        }
+                    ]
+                },
                 {
                     type: ComponentType.ActionRow,
                     components: [
@@ -93,8 +100,20 @@ export async function validate(interaction: CommandInteraction, user?: Pick<Sele
                                 name: 'toliet',
                                 id: '828166715547320350'
                             }
-                        }
+                        },
+                        Config.verification.premiumUrl ? {
+                            type: ComponentType.Button,
+                            style: ButtonStyle.Link,
+                            label: 'Upgrade to bypass',
+                            url: Config.verification.premiumUrl,
+                            emoji: {
+                                animated: true,
+                                name: 'toliet',
+                                id: '828166715547320350'
+                            }
+                        } : null
                     ]
+                        .filter(Boolean) as ButtonComponent[]
                 }
             ]
         });
